@@ -1,0 +1,42 @@
+<div class="page">
+
+<app-operator [operator]="'first'"></app-operator>
+  
+<pre ngNonBindable (click)="first1()" [class.active] = "active === 'first1'"><code class="language-typescript">from([57, 82, 77, 82, 98])
+  .pipe(first(num => num >= 70))
+  .subscribe(console.log);
+</code></pre><!-- &#123; &#125; -->
+  
+<pre ngNonBindable (click)="first2()" [class.active] = "active === 'first2'"><code class="language-typescript">from([57, 82, 77, 82, 98])
+  .pipe(first(num => num < 50 ))
+  .subscribe(console.log);
+</code></pre><!-- &#123; &#125; -->
+
+<pre ngNonBindable (click)="first3()" [class.active] = "active === 'first3'"><code class="language-typescript">interval(1000)
+  .pipe(first((num) => num > 2))
+  .subscribe(console.log);
+</code></pre><!-- &#123; &#125; -->
+
+<app-operator [operator]="'last'"></app-operator>
+  
+<pre ngNonBindable (click)="last1()" [class.active] = "active === 'last1'"><code class="language-typescript">from([57, 82, 77, 82, 98])
+  .pipe(last(num => num < 80))
+  .subscribe(console.log);
+</code></pre><!-- &#123; &#125; -->
+  
+<pre ngNonBindable (click)="last2()" [class.active] = "active === 'last2'"><code class="language-typescript">from([57, 82, 77, 82, 98])
+  .pipe(last(num => num === 100))
+  .subscribe(console.log);
+</code></pre><!-- &#123; &#125; -->
+
+<pre ngNonBindable (click)="last3()" [class.active] = "active === 'last3'"><code class="language-typescript">interval(1000)
+  .pipe(
+    take(5),
+    last(num => num < 3)
+  )
+  .subscribe(console.log);
+</code></pre><!-- &#123; &#125; -->
+
+
+
+</div>

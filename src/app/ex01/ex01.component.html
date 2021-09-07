@@ -1,0 +1,45 @@
+<div class="page">
+    
+<app-operator [operator]="'take'"></app-operator>
+
+<pre ngNonBindable  [class.active] = "active === 'take1'" (click)="take1()"><code class="language-typescript">interval(500).pipe(
+  take(5)
+).subscribe(console.log)
+</code></pre>
+
+<app-operator [operator]="'takeLast'"></app-operator>
+
+<pre ngNonBindable  [class.active] = "active === 'takeLast1'" (click)="takeLast1()"><code class="language-typescript">interval(500).pipe(
+  take(5),
+  takeLast(2)
+).subscribe(console.log)
+</code></pre>
+
+<pre ngNonBindable  [class.active] = "active === 'takeLast2'" (click)="takeLast2()"><code class="language-typescript">interval(500).pipe(
+  take(5),
+  takeLast(10)
+).subscribe(console.log)
+</code></pre>
+
+<app-operator [operator]="'takeUntil'"></app-operator>
+
+<pre ngNonBindable  [class.active] = "active === 'takeUntil1'" (click)="takeUntil1()"><code class="language-typescript">const timer$ = timer(4000);
+this.sub1 = timer$.subscribe(val => console.log('Timer:', val));
+this.sub2 = interval(500).pipe(
+  takeUntil(timer$)
+).subscribe(console.log)
+</code></pre>
+
+<app-operator [operator]="'takeWhile'"></app-operator>
+
+<pre ngNonBindable  [class.active] = "active === 'takeWhile1'" (click)="takeWhile1()"><code class="language-typescript">this.sub1 = interval(500).pipe(
+  takeWhile(val => val <= 4)
+).subscribe(console.log)
+</code></pre>
+
+<div *ngIf="val">
+  <p class="file-name">Result</p>
+  <pre class="json">{{val | json}}</pre>
+</div>
+
+</div>

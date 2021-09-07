@@ -1,0 +1,16 @@
+pre {
+  background-color: #fcf5ee;
+  margin-bottom: 20px;
+  border: 2px solid #99999944;
+  border-radius: 5px;
+}
+
+pre:hover {
+  border: 2px solid #999999;
+}
+
+.active {
+  border: 2px solid #999;
+  -webkit-box-shadow: 0px 0px 7px 3px #ADFF2F; 
+  box-shadow: 0px 0px 7px 3px #ADFF2F;
+}

@@ -1,0 +1,26 @@
+<div class="page">
+<app-operator [operator]="'mapTo'"></app-operator>
+
+<pre ngNonBindable (click)="mapTo1()" [class.active] = "active === 'mapTo1'"><code class="language-typescript">interval(1000)
+  .pipe(
+    mapTo(1)
+  )
+  .subscribe(console.log);
+</code></pre><!-- &#123; &#125; -->
+
+<app-operator [operator]="'merge'"></app-operator>
+
+<pre ngNonBindable (click)="merge1()" [class.active] = "active === 'merge1'"><code class="language-typescript">const stream0$ = interval(1500)
+  .pipe( mapTo('00') );
+
+const stream1$ = interval(2400)
+  .pipe( mapTo('01') );
+  
+const stream2$ = interval(3200)
+  .pipe( mapTo('10') );
+
+merge(stream0$, stream1$, stream2$)
+  .subscribe(console.log);
+</code></pre><!-- &#123; &#125; -->
+
+</div>

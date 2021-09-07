@@ -1,0 +1,29 @@
+<div class="page">
+
+<app-operator [operator]="'ajax'"></app-operator>
+  
+  
+<pre ngNonBindable (click)="ajax1()" [class.active] = "active === 'ajax1'"><code class="language-typescript">ajax('https://jsonplaceholder.typicode.com/users')
+  .pipe(
+    tap(val => this.val = val)
+  )
+  .subscribe();
+</code></pre><!-- &#123; &#125; -->
+    
+<div *ngIf="val">
+  <p class="file-name">Result</p>
+  <pre class="json">{{val | json}}</pre>
+</div>
+    
+<app-operator [operator]="'pluck'"></app-operator>
+
+<pre ngNonBindable (click)="ajaxPluck1()" [class.active] = "active === 'ajaxPluck1'"><code class="language-typescript">ajax('https://jsonplaceholder.typicode.com/users')
+  .pipe(
+    pluck('response'),
+    tap(val => this.val = val)
+  )
+  .subscribe();
+</code></pre><!-- &#123; &#125; -->
+     
+
+</div>

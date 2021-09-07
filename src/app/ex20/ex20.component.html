@@ -1,0 +1,33 @@
+<div class="page">
+
+<app-operator [operator]="'concatMap'"></app-operator>
+  
+<pre ngNonBindable (click)="concatMap1()" [class.active] = "active === 'concatMap1'"><code class="language-typescript">this.todoForm.valueChanges
+  .pipe(
+    filter(() => this.todoForm.valid),
+    concatMap((changes) => this.saveTodo(changes.title))
+  )
+  .subscribe();
+
+
+saveTodo(title: string): Observable&lt;any&gt; &#123;
+  return from(fetch(`https://jsonplaceholder.typicode.com/todos/5?_delay=2000`, &#123;
+      method: 'PUT',
+      body: JSON.stringify(&#123; title: title &#125;),
+      headers: &#123;'content-type': 'application/json'&#125;,
+    &#125;)
+  );
+&#125;
+</code></pre><!-- &#123; &#125; -->
+
+<div class="actions" *ngIf="active == 'concatMap1'">
+  <form [formGroup]="todosForm">
+    <mat-form-field appearance="fill">
+      <mat-label>Todo Title</mat-label>
+      <input matInput formControlName="title" [readonly]="!concatMap1">
+    </mat-form-field>
+  </form>
+</div>
+
+
+</div>

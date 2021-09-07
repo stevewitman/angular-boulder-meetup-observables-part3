@@ -1,0 +1,37 @@
+<div class="page">
+
+<app-operator [operator]="'skip'"></app-operator>
+
+<pre ngNonBindable (click)="skip1()" [class.active] = "active === 'skip1'"><code class="language-typescript">const timer$ = interval(1000)
+  .pipe( skip(3) )
+  .subscribe(console.log);
+</code></pre><!-- &#123; &#125; -->
+
+<app-operator [operator]="'combineLatest'"></app-operator>
+  
+<pre ngNonBindable (click)="combineLatest1()" [class.active] = "active === 'combineLatest1'"><code class="language-typescript">const timer$ = interval(1000)
+  .pipe( skip(3) );
+
+const clicker$ = fromEvent(document, 'click')
+  .pipe(
+    skip(1),
+    pluck('clientX')
+  );
+
+const sub = combineLatest(timer$, clicker$)
+  .subscribe(
+    ([timerVal, clickerVal]) =>
+    console.log(`Timer: $&#123;timerVal&#125;, Clicker: $&#123;clickerVal&#125;`)
+  );
+</code></pre><!-- &#123; &#125; -->
+<div class="buttons-array">
+  <button mat-raised-button class="btn" >&nbsp;</button>
+  <button mat-raised-button class="btn">&nbsp;</button>
+  <button mat-raised-button class="btn">&nbsp;</button>
+  <button mat-raised-button class="btn">&nbsp;</button>
+  <button mat-raised-button class="btn">&nbsp;</button>
+  <button mat-raised-button class="btn">&nbsp;</button>
+  <button mat-raised-button class="btn">&nbsp;</button>
+  <button mat-raised-button class="btn">&nbsp;</button>
+</div>
+</div>

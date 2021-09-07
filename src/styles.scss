@@ -1,0 +1,31 @@
+@import "~prismjs/plugins/toolbar/prism-toolbar.css";
+@import "~prismjs/themes/prism";
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+h2 {
+  line-height: 20px;
+}
+h5 {
+  margin: 0;
+}
+a {
+  text-decoration: none;
+}
+pre {
+  cursor: pointer;
+}
+.smaller {
+  font-size: smaller;
+  font-weight: lighter;
+}
+.page {
+  padding: 6px 24px;
+}
+
+
+.file-name {
+  font-family: monospace, consolas;
+  color: #0074E8;
+  margin: 0;
+}

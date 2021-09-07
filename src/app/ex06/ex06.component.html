@@ -1,0 +1,26 @@
+<div class="page">
+<app-operator [operator]="'take'"></app-operator>
+
+<pre ngNonBindable (click)="take1()" [class.active] = "active === 'take1'"><code class="language-typescript">interval(400)
+  .pipe(
+    take(5)
+  )
+  .subscribe(console.log);
+</code></pre><!-- &#123; &#125; -->
+
+<app-operator [operator]="'concat'"></app-operator>
+
+<pre ngNonBindable (click)="concat1()" [class.active] = "active === 'concat1'"><code class="language-typescript">const obsA$ = interval(500)
+  .pipe( map(val => 'A-' + val), take(4) );
+
+const obsB$ = interval(1000)
+  .pipe( map(val => 'B-' + val), take(3) );
+  
+const obsC$ = interval(3000)
+  .pipe( map(val => 'C-' + val), take(2) );
+
+concat(obsB$, obsC$, obsA$)
+  .subscribe(console.log);
+</code></pre><!-- &#123; &#125; -->
+
+</div>

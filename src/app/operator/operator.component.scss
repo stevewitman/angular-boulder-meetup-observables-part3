@@ -1,0 +1,45 @@
+.operator {
+  display: flex;
+}
+
+.left {
+  flex: 1;
+}
+
+.right {
+  display: flex; 
+  justify-content:flex-end;
+  position: relative;
+  top: 10px;
+  right: -10px;
+}
+
+.op {
+  font-family: monospace;
+  color: #000;
+}
+
+.type {
+  color: #666;
+  font-size: smaller;
+  font-weight: 400;
+  font-style: italic;
+}
+
+::ng-deep .resource-tooltip {
+  background: #666;
+  color: white !important;
+  font-size: 12px;
+  font-family: monospace;
+  max-width: 550px !important;
+}
+
+button:hover {
+  background-color: #65D9EF;
+  color: white;
+}
+
+.mat-icon {
+  position: relative;
+  bottom: 1px;
+}

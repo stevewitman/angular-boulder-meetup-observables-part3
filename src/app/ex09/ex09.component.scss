@@ -1,0 +1,43 @@
+pre {
+  background-color: #fcf5ee;
+  margin-bottom: 20px;
+  border: 2px solid #99999944;
+  border-radius: 5px;
+}
+
+pre:hover {
+  border: 2px solid #999999;
+}
+
+.active {
+  border: 2px solid #999;
+  -webkit-box-shadow: 0px 0px 7px 3px #ADFF2F; 
+  box-shadow: 0px 0px 7px 3px #ADFF2F;
+}
+
+.json {
+  cursor: text;
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: lighter;
+  border: 2px solid #0074E8;
+  background-color: #0074E811;
+  max-height: 140px;
+  overflow: scroll;
+  &:hover {
+    border: 2px solid #0074E8;
+    background-color: #ADFF2F19;
+  }
+}
+
+.actions {
+  display:flex;
+  justify-content: flex-end;
+}
+
+.triggerButtonActive {
+  background-color: black;
+  color: #ADFF2F;
+  -webkit-box-shadow: 0px 0px 7px 3px #ADFF2F; 
+  box-shadow: 0px 0px 7px 3px #ADFF2F;
+}

@@ -1,0 +1,129 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+      [mode]="'side'"
+      [opened]="true">
+      <!-- [opened]="(isHandset$ | async) === false"> -->
+    <mat-toolbar></mat-toolbar>
+    <mat-nav-list>
+      <a
+        mat-list-item
+        [routerLink]="['/slides']"
+        routerLinkActive="link-active"
+      >Slides
+      </a>
+      <a
+        mat-list-item
+        [routerLink]="['/example-1']"
+        routerLinkActive="link-active"
+        matTooltip="takeLast(), takeUntil() and takeWhile()"
+        matTooltipClass="menu-tooltip"
+        matTooltipPosition="after"
+      >Example 1
+      </a>
+      <a
+        mat-list-item
+        [routerLink]="['/example-2']"
+        routerLinkActive="link-active"
+        matTooltip="skipLast(), skipUntil() and skipWhile()"
+        matTooltipClass="menu-tooltip"
+        matTooltipPosition="after">Example 2
+      </a>
+      <a
+        mat-list-item
+        [routerLink]="['/example-3']"
+        routerLinkActive="link-active"
+        matTooltip="switchMap()"
+        matTooltipClass="menu-tooltip"
+        matTooltipPosition="after">Example 3
+      </a>
+      <a
+        mat-list-item
+        [routerLink]="['/example-4']" 
+        routerLinkActive="link-active"
+        matTooltip="exhaustMap()"
+        matTooltipClass="menu-tooltip"
+        matTooltipPosition="after">Example 4
+      </a>
+      <a
+        mat-list-item
+        [routerLink]="['/example-5']"
+        routerLinkActive="link-active"
+        matTooltip="merge() and mapTo()"
+        matTooltipClass="menu-tooltip"
+        matTooltipPosition="after">Example 5
+      </a>
+      <a
+        mat-list-item
+        [routerLink]="['/example-6']"
+        routerLinkActive="link-active"
+        matTooltip="concat() and take()"
+        matTooltipClass="menu-tooltip"
+        matTooltipPosition="after">Example 6
+      </a>
+      <a
+        mat-list-item
+        [routerLink]="['/example-7']"
+        routerLinkActive="link-active"
+        matTooltip="forkJoin() and zip()"
+        matTooltipClass="menu-tooltip"
+        matTooltipPosition="after">Example 7
+      </a>
+      <a
+        mat-list-item
+        [routerLink]="['/example-8']"
+        routerLinkActive="link-active"
+        matTooltip="combineLatest() and skip()"
+        matTooltipClass="menu-tooltip"
+        matTooltipPosition="after">Example 8
+      </a>
+      <a
+        mat-list-item
+        [routerLink]="['/example-9']"
+        routerLinkActive="link-active"
+        matTooltip="buffer(), bufferCount() and bufferTime()"
+        matTooltipClass="menu-tooltip"
+        matTooltipPosition="after">Example 9
+      </a>
+      <a
+        mat-list-item
+        [routerLink]="['/example-10']"
+        routerLinkActive="link-active"
+        matTooltip="filter(), find() and single()"
+        matTooltipClass="menu-tooltip"
+        matTooltipPosition="after">Example 10
+      </a>
+      <a
+        mat-list-item
+        [routerLink]="['/example-11']"
+        routerLinkActive="link-active"
+        matTooltip="first() and last()"
+        matTooltipClass="menu-tooltip"
+        matTooltipPosition="after">Example 11
+      </a>
+      <!-- <a
+        mat-list-item
+        [routerLink]="['/example-12']"
+        routerLinkActive="link-active"
+        matTooltip="switchMap"
+        matTooltipClass="menu-tooltip"
+        matTooltipPosition="after">Example 12
+      </a> -->
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar class="toolbar">
+      <!-- <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button> -->
+      <span class="header">Observables in Angular - Part 3</span>
+    </mat-toolbar>
+    <!-- Add Content Here -->
+    <router-outlet></router-outlet> 
+  </mat-sidenav-content>
+</mat-sidenav-container>

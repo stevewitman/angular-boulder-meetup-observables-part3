@@ -1,0 +1,45 @@
+<div class="page">
+
+<app-operator [operator]="'filter'"></app-operator>
+  
+<pre ngNonBindable (click)="filter1()" [class.active] = "active === 'filter1'"><code class="language-typescript">from([57, 82, 77, 82, 98])
+  .pipe(filter(num => num > 75))
+  .subscribe(console.log);
+</code></pre><!-- &#123; &#125; -->
+  
+<pre ngNonBindable (click)="filter2()" [class.active] = "active === 'filter2'"><code class="language-typescript">from([57, 82, 77, 82, 98])
+  .pipe(filter(num => num === 100 ))
+  .subscribe(console.log);
+</code></pre><!-- &#123; &#125; -->
+
+<app-operator [operator]="'find'"></app-operator>
+  
+<pre ngNonBindable (click)="find1()" [class.active] = "active === 'find1'"><code class="language-typescript">from([57, 82, 77, 82, 98])
+  .pipe(find(num => num > 75))
+  .subscribe(console.log);
+</code></pre><!-- &#123; &#125; -->
+  
+<pre ngNonBindable (click)="find2()" [class.active] = "active === 'find2'"><code class="language-typescript">from([57, 82, 77, 82, 98])
+  .pipe(find(num => num === 100 ))
+  .subscribe(console.log);
+</code></pre><!-- &#123; &#125; -->
+
+<app-operator [operator]="'single'"></app-operator>
+
+
+<pre ngNonBindable (click)="single2()" [class.active] = "active === 'single2'"><code class="language-typescript">from([57, 82, 77, 82, 98])
+  .pipe(single(num => num === 77))
+  .subscribe(console.log);
+</code></pre><!-- &#123; &#125; -->
+  
+<pre ngNonBindable (click)="single3()" [class.active] = "active === 'single3'"><code class="language-typescript">from([57, 82, 77, 82, 98])
+  .pipe(single(num => num === 100 ))
+  .subscribe(console.log);
+</code></pre><!-- &#123; &#125; -->
+
+<pre ngNonBindable (click)="single1()" [class.active] = "active === 'single1'"><code class="language-typescript">from([57, 82, 77, 82, 98])
+  .pipe(single(num => num === 82))
+  .subscribe(console.log);
+</code></pre><!-- &#123; &#125; -->
+
+</div>

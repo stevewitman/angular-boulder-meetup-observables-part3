@@ -1,0 +1,25 @@
+<div class="page">
+
+  <app-operator [operator]="'fromEvent'"></app-operator>
+
+<pre (click)="fromEvent1()" [class.active] = "active === 'fromEvent1'"><code class="language-typescript">fromEvent(document, 'click')
+  .subscribe(console.log);
+</code></pre>
+
+  <app-operator [operator]="'interval'"></app-operator>
+
+<pre (click)="interval1()" [class.active] = "active === 'interval1'"><code class="language-typescript">interval(1000)
+  .subscribe(console.log);
+</code></pre>
+
+  <app-operator [operator]="'timer'"></app-operator>
+
+<pre (click)="timer1()" [class.active] = "active === 'timer1'"><code class="language-typescript">timer(2500)
+  .subscribe(console.log);
+</code></pre>
+
+<pre (click)="timer2()" [class.active] = "active === 'timer2'"><code class="language-typescript">timer(3000, 500)
+  .subscribe(console.log);
+</code></pre>
+
+</div>

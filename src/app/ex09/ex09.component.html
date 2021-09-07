@@ -1,0 +1,42 @@
+<div class="page">
+
+<app-operator [operator]="'buffer'"></app-operator>
+  
+<pre ngNonBindable (click)="buffer1()" [class.active] = "active === 'buffer1'"><code class="language-typescript">const counter$ = interval(500);
+counter$
+  .pipe(
+    buffer(this.buttonClicks$)
+  )
+  .subscribe(console.log);
+</code></pre><!-- &#123; &#125; -->
+<div class="actions">
+  <button
+    mat-stroked-button
+    #triggerBtn
+    [disabled]="!(active == 'buffer1')"
+    [ngClass]="{'triggerButtonActive': (active == 'buffer1')}"
+  >Button</button>
+</div>
+
+<app-operator [operator]="'bufferCount'"></app-operator>
+  
+<pre ngNonBindable (click)="bufferCount1()" [class.active] = "active === 'bufferCount1'"><code class="language-typescript">const myObs$ = interval(500);
+myObs$.bufferCount(4).subscribe(console.log);
+</code></pre><!-- &#123; &#125; -->
+
+<pre ngNonBindable (click)="bufferCount2()" [class.active] = "active === 'bufferCount2'"><code class="language-typescript">const myObs$ = interval(500);
+myObs$.bufferCount(4, 2).subscribe(console.log);
+</code></pre><!-- &#123; &#125; -->
+
+<app-operator [operator]="'bufferTime'"></app-operator>
+  
+<pre ngNonBindable (click)="bufferTime1()" [class.active] = "active === 'bufferTime1'"><code class="language-typescript">const myObs$ = interval(500);
+myObs$
+  .pipe(
+    bufferTime(1500),
+    tap( (val: any) => console.log(val) )
+  )
+  .subscribe();
+</code></pre><!-- &#123; &#125; -->
+
+</div>
