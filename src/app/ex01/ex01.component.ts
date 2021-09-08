@@ -16,9 +16,7 @@ export class Ex01Component implements OnInit, AfterViewChecked {
   val: any;
   componentDestroyed$: Subject<boolean> = new Subject();
 
-  constructor(
-    private highlightService: HighlightService,
-  ) {}
+  constructor(private highlightService: HighlightService) {}
 
   ngOnInit(): void {
     console.clear();
@@ -145,4 +143,16 @@ export class Ex01Component implements OnInit, AfterViewChecked {
       .subscribe(observer);
   }
 
+  takeWhile2() {
+    this.active = 'takeWhile2';
+    console.clear();
+    logInConsole('subscribed');
+    interval(1000)
+      .pipe(
+        map((n) => n + 1),
+        takeWhile((val) => val <= 4, true),
+        takeUntil(this.componentDestroyed$)
+      )
+      .subscribe(observer);
+  }
 }

@@ -81,6 +81,13 @@ interval(1000)
   ).subscribe(v => console.log(v))
 </code></pre>
 
+<pre ngNonBindable [class.active] = "active === 'takeWhile2'" (click)="takeWhile2()"><code class="language-typescript">interval(1000)
+  .pipe(
+    map(n => n + 1),
+    takeWhile(val => val <= 4, true)
+  ).subscribe(v => console.log(v))
+</code></pre>
+
 <div *ngIf="val">
   <p class="file-name">Result</p>
   <pre class="json">{{val | json}}</pre>
