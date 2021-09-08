@@ -22,6 +22,7 @@ import {
 } from 'rxjs/operators';
 
 import { HighlightService } from '../highlight.service';
+import { logInConsole, observer } from '../shared/utility';
 
 @Component({
   selector: 'app-ex02',
@@ -31,33 +32,15 @@ import { HighlightService } from '../highlight.service';
 export class Ex02Component implements OnInit, AfterViewChecked {
   active: string = '';
   val: any;
-  obs1$: Observable<any>;
-  sub1?: Subscription;
-  sub2?: Subscription;
-  observer?: Observer<any>;
   componentDestroyed$: Subject<boolean> = new Subject();
 
   constructor(
     private highlightService: HighlightService,
     private http: HttpClient
-  ) {
-    this.obs1$ = timer(2000);
-  }
+  ) {}
 
   ngOnInit(): void {
     console.clear();
-
-    this.observer = {
-      next: (value: any) => {
-        console.log(value);
-      },
-      error: (error: any) => {
-        console.error(error);
-      },
-      complete: () => {
-        this.logInConsole('completed');
-      },
-    };
   }
 
   ngAfterViewChecked() {
@@ -73,7 +56,7 @@ export class Ex02Component implements OnInit, AfterViewChecked {
   skip2() {
     this.active = 'skip2';
     console.clear();
-    this.logInConsole('subscribed');
+    logInConsole('subscribed');
     interval(100)
       .pipe(
         map((n) => (n + 1) / 10),
@@ -81,16 +64,16 @@ export class Ex02Component implements OnInit, AfterViewChecked {
         takeWhile((n) => n <= 2),
         takeUntil(this.componentDestroyed$)
       )
-      .subscribe(this.observer);
+      .subscribe(observer);
   }
 
   skipLast1() {
     this.active = 'skipLast1';
     console.clear();
-    this.logInConsole('subscribed');
+    logInConsole('subscribed');
     from(['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'])
       .pipe(skipLast(2), takeUntil(this.componentDestroyed$))
-      .subscribe(this.observer);
+      .subscribe(observer);
   }
 
   skipUntil1() {
@@ -99,7 +82,7 @@ export class Ex02Component implements OnInit, AfterViewChecked {
     const obs1$: Observable<any> = interval(2500);
 
     const interval$ = interval(1000);
-    this.logInConsole('interval$ subscribed');
+    logInConsole('subscribed');
     interval$
       .pipe(
         map((n) => n + 1),
@@ -107,26 +90,20 @@ export class Ex02Component implements OnInit, AfterViewChecked {
         take(5),
         takeUntil(this.componentDestroyed$)
       )
-      .subscribe(this.observer);
+      .subscribe(observer);
   }
 
   skipWhile1() {
     this.active = 'skipWhile1';
     console.clear();
-    this.logInConsole('subscribed');
+    logInConsole('subscribed');
     interval(1000)
       .pipe(
         map((n) => n + 1),
         skipWhile((val) => val < 3),
         takeUntil(this.componentDestroyed$)
       )
-      .subscribe(this.observer);
+      .subscribe(observer);
   }
 
-  private logInConsole(val: string) {
-    console.log(
-      `%c ${val}`,
-      'background: #ADFF2F66; font-weight: bold; border-radius: 3px;'
-    );
-  }
 }
