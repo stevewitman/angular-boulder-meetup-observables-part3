@@ -2,39 +2,83 @@
     
 <app-operator [operator]="'take'"></app-operator>
 
-<pre ngNonBindable  [class.active] = "active === 'take1'" (click)="take1()"><code class="language-typescript">interval(500).pipe(
-  take(5)
-).subscribe(console.log)
+<pre ngNonBindable [class.active] = "active === 'take1'" (click)="take1()"><code class="language-typescript">interval(1000)
+  .pipe(
+    take(4) // emit 4 values then complete
+  )
+  .subscribe(v => console.log(v));
+</code></pre>
+
+<pre ngNonBindable [class.active] = "active === 'take2'" (click)="take2()"><code class="language-typescript">interval(1000)
+  .pipe(
+    map((n) => n + 1), // convert from zero-based to one-based
+    take(4) // emit 4 values then complete
+  )
+  .subscribe(v => console.log(v));
 </code></pre>
 
 <app-operator [operator]="'takeLast'"></app-operator>
 
-<pre ngNonBindable  [class.active] = "active === 'takeLast1'" (click)="takeLast1()"><code class="language-typescript">interval(500).pipe(
-  take(5),
-  takeLast(2)
-).subscribe(console.log)
+<pre ngNonBindable [class.active] = "active === 'takeLast1'" (click)="takeLast1()"><code class="language-typescript">interval(1000)
+  .pipe(
+    map((n) => n + 1),
+    take(4),
+    takeLast(2)
+  )
+  .subscribe(v => console.log(v));
 </code></pre>
 
-<pre ngNonBindable  [class.active] = "active === 'takeLast2'" (click)="takeLast2()"><code class="language-typescript">interval(500).pipe(
-  take(5),
-  takeLast(10)
-).subscribe(console.log)
+<pre ngNonBindable [class.active] = "active === 'takeLast2'" (click)="takeLast2()"><code class="language-typescript">interval(1000)
+  .pipe(
+    map((n) => n + 1),
+    take(4),
+    takeLast(10)
+  )
+  .subscribe(v => console.log(v));
 </code></pre>
 
 <app-operator [operator]="'takeUntil'"></app-operator>
 
-<pre ngNonBindable  [class.active] = "active === 'takeUntil1'" (click)="takeUntil1()"><code class="language-typescript">const timer$ = timer(4000);
-this.sub1 = timer$.subscribe(val => console.log('Timer:', val));
-this.sub2 = interval(500).pipe(
-  takeUntil(timer$)
-).subscribe(console.log)
+<pre ngNonBindable [class.active] = "active === 'takeUntil1'" (click)="takeUntil1()"><code class="language-typescript">const timer$: Observable = timer(4500);
+
+interval(1000)
+  .pipe(
+    map((n) => n + 1),
+    takeUntil(timer$) // subscribes to timer$ observable
+  )
+  .subscribe(v => console.log(v));
 </code></pre>
+
+<pre ngNonBindable [class.active] = "active === 'takeUntil2'" (click)="takeUntil2()"><code class="language-typescript">const clicksInDocument$ = fromEvent(document, 'click').pipe(skip(1));
+
+interval(1000)
+  .pipe(
+    map((n) => n + 1),
+    takeUntil(clicksInDocument$) 
+  )
+.subscribe(v => console.log(v));
+</code></pre>
+
+<pre ngNonBindable [class.active] = "active === 'takeUntil3'" (click)="takeUntil3()"><code class="language-typescript">const clicksInDocument$ = fromEvent(document, 'click').pipe(skip(1));
+
+interval(1000)
+  .pipe(
+    map((n) => n + 1),
+    takeUntil(clicksInDocument$) ,
+    takeUntil(this.componentDestroyed$)
+  )
+.subscribe(v => console.log(v));
+</code></pre>
+
+
 
 <app-operator [operator]="'takeWhile'"></app-operator>
 
-<pre ngNonBindable  [class.active] = "active === 'takeWhile1'" (click)="takeWhile1()"><code class="language-typescript">this.sub1 = interval(500).pipe(
-  takeWhile(val => val <= 4)
-).subscribe(console.log)
+<pre ngNonBindable [class.active] = "active === 'takeWhile1'" (click)="takeWhile1()"><code class="language-typescript">interval(1000)
+  .pipe(
+    map(n => n + 1),
+    takeWhile(val => val <= 4)
+  ).subscribe(v => console.log(v))
 </code></pre>
 
 <div *ngIf="val">

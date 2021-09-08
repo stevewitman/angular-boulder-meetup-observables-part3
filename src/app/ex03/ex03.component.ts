@@ -1,98 +1,124 @@
-import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { AfterViewChecked, Component, OnInit } from '@angular/core';
 
-import { map, switchMap, take, tap } from 'rxjs/operators';
+import {
+  fromEvent,
+  generate,
+  interval,
+  Observable,
+  Observer,
+  Subject,
+  Subscription,
+  timer,
+} from 'rxjs';
+import {
+  concatMap,
+  delay,
+  filter,
+  ignoreElements,
+  map,
+  skip,
+  startWith,
+  take,
+  takeLast,
+  takeUntil,
+  takeWhile,
+} from 'rxjs/operators';
 
 import { HighlightService } from '../highlight.service';
-import { interval, of, timer } from 'rxjs';
 
 @Component({
   selector: 'app-ex03',
   templateUrl: './ex03.component.html',
   styleUrls: ['./ex03.component.scss'],
 })
-export class Ex03Component implements OnInit {
+export class Ex03Component implements OnInit, AfterViewChecked {
   active: string = '';
   val: any;
+  obs1$: Observable<any>;
+  sub1?: Subscription;
+  sub2?: Subscription;
+  observer?: Observer<any>;
+  componentDestroyed$: Subject<boolean> = new Subject();
 
   constructor(
     private highlightService: HighlightService,
     private http: HttpClient
-  ) {}
-
-  
+  ) {
+    this.obs1$ = timer(2000);
+  }
 
   ngOnInit(): void {
     console.clear();
-    let srcObservable= interval(1000).pipe(
-      take(4)
-    )
-let innerObservable= interval(400).pipe(
-      take(4)
-    )
- 
-srcObservable.pipe(
-  switchMap( val => {
-    console.log('Source value '+val)
-    console.log('starting new observable')
-    return innerObservable
-  })
-)
-.subscribe(ret=> {
-  console.log('Recd ' + ret);
-})
+
+    this.observer = {
+      next: (value: any) => {
+        console.log(value);
+      },
+      error: (error: any) => {
+        console.error(error);
+      },
+      complete: () => {
+        this.logInConsole('completed');
+      },
+    };
   }
 
   ngAfterViewChecked() {
     this.highlightService.highlightAll();
   }
 
-  pipeTap1() {
-    this.val = null;
-    this.active = 'pipeTap1';
-    console.clear();
-    this.logInConsole('Tap and console.log ...');
-    this.http
-      .get('https://jsonplaceholder.typicode.com/users')
-      .pipe(
-        tap(val => console.log('DATA:', val)),
-      )
-      .subscribe();
+  ngOnDestroy() {
+    this.componentDestroyed$.next(true);
+    this.componentDestroyed$.complete();
+    console.log('subscription complete');
   }
 
-  pipeTap2() {
-    this.active = 'pipeTap2';
+  debounce1() {
+    this.active = 'debounce1';
     console.clear();
-    this.logInConsole('See result in the browser');
-    this.http
-      .get('https://jsonplaceholder.typicode.com/users')
+    this.logInConsole('subscribed');
+    interval(1000)
       .pipe(
-        tap(val => this.val = val)
+        map((n) => n + 1),
+        take(4),
+        takeLast(2),
+        takeUntil(this.componentDestroyed$)
       )
-      .subscribe();
+      .subscribe(this.observer);
   }
 
-  pipeTapMap3() {
-    this.active = 'pipeTapMap3';
+  debounceTime2() {
+    this.active = 'debounceTime2';
     console.clear();
-    this.logInConsole('See result in the browser');
-    this.http
-      .get('https://jsonplaceholder.typicode.com/users')
+    this.logInConsole('subscribed');
+    interval(1000)
       .pipe(
-        map((res: any) =>
-          res.map((data: any) => {
-            return {
-              id: data.id,
-              name: data.name,
-            };
-          })
-        ),
-        tap((val) => (this.val = val))
+        map((n) => n + 1),
+        take(4),
+        takeLast(10),
+        takeUntil(this.componentDestroyed$)
       )
-      .subscribe();
+      .subscribe(this.observer);
   }
 
-  logInConsole(val: string) {
+  throttleTime1() {
+    this.active = 'takeUntil1';
+    console.clear();
+    const timer$: Observable<any> = timer(4500);
+
+    const interval$ = interval(1000);
+    this.logInConsole('interval$ subscribed');
+    interval$
+      .pipe(
+        map((n) => n + 1),
+        takeUntil(timer$),
+        takeUntil(this.componentDestroyed$)
+      )
+      .subscribe(this.observer);
+  }
+  
+  private logInConsole(val: string) {
     console.log(
       `%c ${val}`,
       'background: #ADFF2F66; font-weight: bold; border-radius: 3px;'

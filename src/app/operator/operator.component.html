@@ -29,6 +29,15 @@
           <span>Learn Rxjs</span>
         </a>
         <a
+          mat-menu-item href="{{dataIndepthdevUrl}}"
+          [disabled]="!dataIndepthdevUrl"
+          target="_blank"
+          [matTooltip]="dataIndepthdevUrl"
+          matTooltipClass="resource-tooltip"
+          matTooltipPosition="before">
+          <span>In Depth Dev</span>
+        </a>
+        <a
           mat-menu-item href="{{dataMarblesUrl}}"
           [disabled]="!dataMarblesUrl"
           target="_blank"

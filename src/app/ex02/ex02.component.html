@@ -1,25 +1,53 @@
 <div class="page">
+    
+<app-operator [operator]="'skip'"></app-operator>
 
-  <app-operator [operator]="'fromEvent'"></app-operator>
-
-<pre (click)="fromEvent1()" [class.active] = "active === 'fromEvent1'"><code class="language-typescript">fromEvent(document, 'click')
-  .subscribe(console.log);
+<pre ngNonBindable [class.active] = "active === 'skip2'" (click)="skip2()"><code class="language-typescript">interval(100)
+  .pipe(
+    map((n) => (n + 1) / 10),
+    skip(5),
+    takeWhile(n => n <= 2),
+  )
+  .subscribe(v => console.log(v));
 </code></pre>
 
-  <app-operator [operator]="'interval'"></app-operator>
+<app-operator [operator]="'skipLast'"></app-operator>
 
-<pre (click)="interval1()" [class.active] = "active === 'interval1'"><code class="language-typescript">interval(1000)
-  .subscribe(console.log);
+<pre ngNonBindable [class.active] = "active === 'skipLast1'" (click)="skipLast1()"><code class="language-typescript">from(['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'])
+  .pipe(
+    skipLast(2),
+  )
+  .subscribe(v => console.log(v));
 </code></pre>
 
-  <app-operator [operator]="'timer'"></app-operator>
 
-<pre (click)="timer1()" [class.active] = "active === 'timer1'"><code class="language-typescript">timer(2500)
-  .subscribe(console.log);
+<app-operator [operator]="'skipUntil'"></app-operator>
+
+<pre ngNonBindable [class.active] = "active === 'skipUntil1'" (click)="skipUntil1()"><code class="language-typescript">const obs1$ = interval(2500);
+const interval$ = interval(1000);
+interval$
+  .pipe(
+    map((n) => n + 1),
+    skipUntil(obs1$),
+    take(5),
+  )
+  .subscribe(v => console.log(v));
 </code></pre>
 
-<pre (click)="timer2()" [class.active] = "active === 'timer2'"><code class="language-typescript">timer(3000, 500)
-  .subscribe(console.log);
+<app-operator [operator]="'skipWhile'"></app-operator>
+
+<pre ngNonBindable [class.active] = "active === 'skipWhile1'" (click)="skipWhile1()"><code class="language-typescript">interval(1000)  
+  .pipe(
+    map((n) => n + 1),
+    skipWhile(val => val < 3),
+    takeUntil(this.componentDestroyed$)
+  )
+  .subscribe(v => console.log(v))
 </code></pre>
+
+<div *ngIf="val">
+  <p class="file-name">Result</p>
+  <pre class="json">{{val | json}}</pre>
+</div>
 
 </div>

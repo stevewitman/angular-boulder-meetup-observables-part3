@@ -34,4 +34,9 @@ export class OperatorComponent implements OnInit {
   get dataMarblesUrl() {
     return this.data && this.data.marblesUrl ? this.data.marblesUrl : null;
   }
+  get dataIndepthdevUrl() {
+    return this.data && this.data.indepthdevUrl
+      ? this.data.indepthdevUrl
+      : null;
+  }
 }

@@ -1,44 +1,17 @@
 <div class="page">
 
-  <app-operator [operator]="'switchMap'"></app-operator>
-  <app-operator [operator]="'tap'"></app-operator>
+  <app-operator [operator]="'debounce'"></app-operator>
+  <app-operator [operator]="'debounceTime'"></app-operator>
+  <app-operator [operator]="'throttleTime'"></app-operator>
 
 
-<pre ngNonBindable (click)="pipeTap1()" [class.active] = "active === 'pipeTap1'"><code class="language-typescript">this.http.get('https://jsonplaceholder.typicode.com/users')
+<pre ngNonBindable (click)="debounce1()" [class.active] = "active === 'debounce1'"><code class="language-typescript">this.http.get('https://jsonplaceholder.typicode.com/users')
   .pipe(
+    delay(2000),
     tap(val => console.log('DATA:', val))
   )
   .subscribe();
 </code></pre>
 
-<pre ngNonBindable (click)="pipeTap2()" [class.active] = "active === 'pipeTap2'"><code class="language-typescript">this.http.get('https://jsonplaceholder.typicode.com/users')
-  .pipe(
-    tap(val => this.val = val)
-  )
-  .subscribe();
-</code></pre>
-
-<div *ngIf="val">
-  <p class="file-name">Result</p>
-  <pre class="json">{{val | json}}</pre>
-</div>
-
-
-  <app-operator [operator]="'map'"></app-operator>
-
-<pre ngNonBindable (click)="pipeTapMap3()" [class.active] = "active === 'pipeTapMap3'"><code class="language-typescript">this.http.get('https://jsonplaceholder.typicode.com/users')
-  .pipe(
-    map((res: any) =>
-      res.map((data: any) => &#123;
-        return &#123;
-          id: data.id,
-          name: data.name,
-        &#125;;
-      &#125;)
-    ),
-    tap(val => this.val = val)
-  )
-  .subscribe();
-</code></pre>
 
 </div>

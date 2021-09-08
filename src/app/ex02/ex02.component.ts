@@ -1,6 +1,25 @@
-import { AfterViewChecked, Component, OnDestroy, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { AfterViewChecked, Component, OnInit } from '@angular/core';
 
-import { fromEvent, interval, Subscription, timer } from 'rxjs';
+import {
+  from,
+  interval,
+  Observable,
+  Observer,
+  Subject,
+  Subscription,
+  timer,
+} from 'rxjs';
+import {
+  map,
+  skip,
+  skipLast,
+  skipUntil,
+  skipWhile,
+  take,
+  takeUntil,
+  takeWhile,
+} from 'rxjs/operators';
 
 import { HighlightService } from '../highlight.service';
 
@@ -9,17 +28,36 @@ import { HighlightService } from '../highlight.service';
   templateUrl: './ex02.component.html',
   styleUrls: ['./ex02.component.scss'],
 })
-export class Ex02Component implements OnInit, OnDestroy, AfterViewChecked {
+export class Ex02Component implements OnInit, AfterViewChecked {
   active: string = '';
-  fromEventSub?: Subscription;
-  intervalSub?: Subscription;
-  timerSub?: Subscription;
-  subscriptions = new Subscription();
+  val: any;
+  obs1$: Observable<any>;
+  sub1?: Subscription;
+  sub2?: Subscription;
+  observer?: Observer<any>;
+  componentDestroyed$: Subject<boolean> = new Subject();
 
-  constructor(private highlightService: HighlightService) {}
+  constructor(
+    private highlightService: HighlightService,
+    private http: HttpClient
+  ) {
+    this.obs1$ = timer(2000);
+  }
 
   ngOnInit(): void {
     console.clear();
+
+    this.observer = {
+      next: (value: any) => {
+        console.log(value);
+      },
+      error: (error: any) => {
+        console.error(error);
+      },
+      complete: () => {
+        this.logInConsole('completed');
+      },
+    };
   }
 
   ngAfterViewChecked() {
@@ -27,45 +65,67 @@ export class Ex02Component implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   ngOnDestroy() {
-    this.subscriptions.unsubscribe();
+    this.componentDestroyed$.next(true);
+    this.componentDestroyed$.complete();
+    console.log('subscription complete');
   }
 
-  fromEvent1() {
-    this.active = 'fromEvent1';
-    // console.clear();
-    this.logInConsole("fromEvent(document, 'click')");
-    this.fromEventSub = fromEvent(document, 'click')
-      .subscribe(console.log);
-    this.subscriptions.add(this.fromEventSub);
+  skip2() {
+    this.active = 'skip2';
+    console.clear();
+    this.logInConsole('subscribed');
+    interval(100)
+      .pipe(
+        map((n) => (n + 1) / 10),
+        skip(5),
+        takeWhile((n) => n <= 2),
+        takeUntil(this.componentDestroyed$)
+      )
+      .subscribe(this.observer);
   }
 
-  interval1() {
-    this.active = 'interval1';
-    // console.clear();
-    this.logInConsole('interval(1000)');
-    this.intervalSub = interval(1000).subscribe(console.log);
-    this.subscriptions.add(this.intervalSub);
+  skipLast1() {
+    this.active = 'skipLast1';
+    console.clear();
+    this.logInConsole('subscribed');
+    from(['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'])
+      .pipe(skipLast(2), takeUntil(this.componentDestroyed$))
+      .subscribe(this.observer);
   }
 
-  timer1() {
-    this.active = 'timer1';
-    // console.clear();
-    this.logInConsole('timer(2500)');
-    this.timerSub = timer(2500).subscribe(console.log);
-    this.subscriptions.add(this.timerSub);
+  skipUntil1() {
+    this.active = 'skipUntil1';
+    console.clear();
+    const obs1$: Observable<any> = interval(2500);
+
+    const interval$ = interval(1000);
+    this.logInConsole('interval$ subscribed');
+    interval$
+      .pipe(
+        map((n) => n + 1),
+        skipUntil(obs1$),
+        take(5),
+        takeUntil(this.componentDestroyed$)
+      )
+      .subscribe(this.observer);
   }
 
-  timer2() {
-    this.active = 'timer2';
-    // console.clear();
-    this.logInConsole('timer(3000, 500)');
-    this.timerSub = timer(3000, 500).subscribe(console.log);
-    this.subscriptions.add(this.timerSub);
+  skipWhile1() {
+    this.active = 'skipWhile1';
+    console.clear();
+    this.logInConsole('subscribed');
+    interval(1000)
+      .pipe(
+        map((n) => n + 1),
+        skipWhile((val) => val < 3),
+        takeUntil(this.componentDestroyed$)
+      )
+      .subscribe(this.observer);
   }
 
-  logInConsole(val: string) {
+  private logInConsole(val: string) {
     console.log(
-      `%c ${val} emits ... `,
+      `%c ${val}`,
       'background: #ADFF2F66; font-weight: bold; border-radius: 3px;'
     );
   }
