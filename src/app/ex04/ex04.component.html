@@ -1,29 +1,52 @@
 <div class="page">
 
-<app-operator [operator]="'ajax'"></app-operator>
-  
-  
-<pre ngNonBindable (click)="ajax1()" [class.active] = "active === 'ajax1'"><code class="language-typescript">ajax('https://jsonplaceholder.typicode.com/users')
-  .pipe(
-    tap(val => this.val = val)
-  )
-  .subscribe();
-</code></pre><!-- &#123; &#125; -->
-    
-<div *ngIf="val">
-  <p class="file-name">Result</p>
-  <pre class="json">{{val | json}}</pre>
-</div>
-    
-<app-operator [operator]="'pluck'"></app-operator>
+  <app-operator [operator]="'throttleTime'"></app-operator>
 
-<pre ngNonBindable (click)="ajaxPluck1()" [class.active] = "active === 'ajaxPluck1'"><code class="language-typescript">ajax('https://jsonplaceholder.typicode.com/users')
-  .pipe(
-    pluck('response'),
-    tap(val => this.val = val)
-  )
-  .subscribe();
-</code></pre><!-- &#123; &#125; -->
-     
+<pre ngNonBindable (click)="throttle1()" [class.active]="active === 'throttle1'">
+<code class="language-typescript">const exampleInput = document.getElementById('exampleInput')!;
+
+this.keyup$ = fromEvent(exampleInput, 'keyup')
+
+this.keyup$.subscribe(result => &#123;
+  this.withoutThrottle = this.exampleForm.value.exampleInput;
+  console.log('(KEYUP)');
+&#125;);
+
+this.throttled$ = this.keyup$.pipe(
+  map(i => i.currentTarget.value),
+  throttleTime(1000),
+);
+
+this.throttled$.subscribe(val => console.log(val));
+</code>
+</pre>
+
+  <div class="row-output">
+    <div class="col-left"></div>
+    <div class="col-right">
+      <form class="example-form" [formGroup]="exampleForm">
+        <mat-form-field appearance="fill" class="form-field">
+          <mat-label>Input</mat-label>
+          <input
+            matInput
+            formControlName="exampleInput"
+            type="text"
+            id="exampleInput"
+            autocomplete="off"
+            class="input-field"
+          >
+        </mat-form-field>
+      </form>
+    </div>
+  </div>
+  <div class="row-output not-throttled">
+    <div class="col-left"><h3>Without throttleTime:</h3></div>
+    <div class="col-right"><h3>{{ withoutThrottle }}</h3></div>
+  </div>
+  <div class="row-output throttled">
+    <div class="col-left"><h3>With throttleTime:</h3></div>
+    <div class="col-right"><h3>{{ throttled$ | async }}</h3></div>
+  </div>  
+ 
 
 </div>

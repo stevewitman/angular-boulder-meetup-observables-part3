@@ -1,58 +1,70 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { AfterViewChecked, Component, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 
-import { pluck, tap } from 'rxjs/operators';
-import { ajax } from 'rxjs/ajax';
+import { fromEvent, Observable, Subject } from 'rxjs';
+import { map, takeUntil, throttleTime } from 'rxjs/operators';
 
 import { HighlightService } from '../highlight.service';
+import { logInConsole } from '../shared/utility';
 
 @Component({
   selector: 'app-ex04',
   templateUrl: './ex04.component.html',
   styleUrls: ['./ex04.component.scss'],
 })
-export class Ex04Component implements OnInit {
+export class Ex04Component implements OnInit, AfterViewChecked, OnDestroy {
   active: string = '';
-  val: any;
+  keyup$!: Observable<any>;
+  throttled$!: Observable<any>;
+  unsubscribe$ = new Subject();
+  withoutThrottle: string = '';
+  exampleForm = new FormGroup({
+    exampleInput: new FormControl({ value: '', disabled: true }),
+  });
 
-  constructor(
-    private highlightService: HighlightService,
-    private http: HttpClient
-  ) {}
+  constructor(private highlightService: HighlightService) {}
 
   ngOnInit(): void {
-    console.clear();  
+    console.clear();
   }
 
   ngAfterViewChecked() {
     this.highlightService.highlightAll();
   }
 
-  ajax1() {
-    this.active = 'ajax1';
-    console.clear();
-    ajax('https://jsonplaceholder.typicode.com/users')
-      .pipe(
-        tap(val => this.val = val)
-      )
-      .subscribe(console.log);
+  ngOnDestroy() {
+    this.unsubscribe$.next(true);
+    this.unsubscribe$.complete();
+    console.log('unsubscribed');
   }
 
-  ajaxPluck1() {
-    this.active = 'ajaxPluck1';
-    console.clear();
-    ajax('https://jsonplaceholder.typicode.com/users')
-      .pipe(
-        pluck('response'),
-        tap((val) => (this.val = val))
-      )
-      .subscribe(console.log);
+  exampleReset() {
+    this.unsubscribe$.next(true);
+    console.log('unsubscribed');
   }
 
-  logInConsole(val: string) {
-    console.log(
-      `%c ${val} emits ... `,
-      'background: #ADFF2F66; font-weight: bold; border-radius: 3px;'
+  throttle1() {
+    this.active = 'throttle1';
+    console.clear();
+    this.exampleReset();
+    this.withoutThrottle = '';
+    this.exampleForm.get('exampleInput')?.reset();
+    this.exampleForm.get('exampleInput')?.enable();
+    logInConsole('subscribed');
+    const exampleInput = document.getElementById('exampleInput')!;
+
+    this.keyup$ = fromEvent(exampleInput, 'keyup').pipe(
+      takeUntil(this.unsubscribe$)
     );
+    this.keyup$.subscribe((result) => {
+      this.withoutThrottle = this.exampleForm.value.exampleInput;
+      console.log('(KEYUP)');
+    });
+    this.throttled$ = this.keyup$.pipe(
+      map((i) => i.currentTarget.value),
+      throttleTime(1000),
+      takeUntil(this.unsubscribe$)
+    );
+    this.throttled$.subscribe((val) => console.log(val));
   }
 }

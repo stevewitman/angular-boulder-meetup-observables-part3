@@ -1,17 +1,58 @@
 <div class="page">
 
-  <app-operator [operator]="'debounce'"></app-operator>
   <app-operator [operator]="'debounceTime'"></app-operator>
-  <app-operator [operator]="'throttleTime'"></app-operator>
 
 
-<pre ngNonBindable (click)="debounce1()" [class.active] = "active === 'debounce1'"><code class="language-typescript">this.http.get('https://jsonplaceholder.typicode.com/users')
-  .pipe(
-    delay(2000),
-    tap(val => console.log('DATA:', val))
-  )
-  .subscribe();
-</code></pre>
 
+
+
+
+<pre ngNonBindable (click)="debounce1()" [class.active]="active === 'debounce1'">
+<code class="language-typescript">const exampleInput = document.getElementById('exampleInput')!;
+
+this.keyup$ = fromEvent(exampleInput, 'keyup')
+
+this.keyup$.subscribe(result => &#123;
+  this.withoutDebounce = this.exampleForm.value.exampleInput;
+  console.log('(KEYUP)');
+&#125;);
+
+this.debounced$ = this.keyup$.pipe(
+  map(i => i.currentTarget.value),
+  debounceTime(500),
+);
+
+this.debounced$.subscribe(val => console.log(val));
+</code>
+</pre>
+
+  <div class="row-output">
+    <div class="col-left"></div>
+    <div class="col-right">
+      <form class="example-form" [formGroup]="exampleForm">
+        <mat-form-field appearance="fill" class="form-field">
+          <mat-label>Input</mat-label>
+          <input
+            matInput
+            formControlName="exampleInput"
+            type="text"
+            id="exampleInput"
+            autocomplete="off"
+            class="input-field"
+            
+            >
+            <!-- [disabled]="!((active === 'debounce1') || (active === 'throttle1'))" -->
+        </mat-form-field>
+      </form>
+    </div>
+  </div>
+  <div class="row-output not-debounced">
+    <div class="col-left"><h3>Without debounce:</h3></div>
+    <div class="col-right"><h3>{{ withoutDebounce }}</h3></div>
+  </div>
+  <div class="row-output debounced">
+    <div class="col-left"><h3>With debounce:</h3></div>
+    <div class="col-right"><h3>{{ debounced$ | async }}</h3></div>
+  </div>  
 
 </div>

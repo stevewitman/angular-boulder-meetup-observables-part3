@@ -9,6 +9,10 @@ pre:hover {
   border: 2px solid #999999;
 }
 
+h3 {
+  margin: 10px;
+}
+
 .active {
   border: 2px solid #999;
   -webkit-box-shadow: 0px 0px 7px 3px #ADFF2F; 
@@ -28,4 +32,37 @@ pre:hover {
     border: 2px solid #0074E8;
   background-color: #ADFF2F19;
   }
+}
+
+.row-output {
+  display: flex;
+  flex-direction: row;
+}
+
+.col-left {
+  width: 35%;
+}
+
+.col-right {
+  width: 65%;
+  letter-spacing: 1px;
+}
+form {
+  width: 100%;
+}
+
+.form-field {
+  width: 100%;
+}
+.input-field {
+  width: 100%;
+  font-weight: 900;
+  font-size: 18.72px;
+  letter-spacing: 1px;
+}
+.not-debounced {
+  color: rgb(138, 16, 16);
+}
+.debounced {
+  color: rgb(10, 18, 128);
 }

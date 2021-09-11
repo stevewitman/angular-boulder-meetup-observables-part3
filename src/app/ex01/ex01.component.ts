@@ -1,6 +1,6 @@
-import { AfterViewChecked, Component, OnInit } from '@angular/core';
+import { AfterViewChecked, Component, OnDestroy, OnInit } from '@angular/core';
 
-import { fromEvent, interval, Observable, Observer, Subject, Subscription, timer } from 'rxjs';
+import { fromEvent, interval, Observable, Subject, timer } from 'rxjs';
 import { map, skip, take, takeLast, takeUntil, takeWhile } from 'rxjs/operators';
 
 import { HighlightService } from '../highlight.service';
@@ -11,7 +11,7 @@ import { logInConsole, observer } from '../shared/utility';
   templateUrl: './ex01.component.html',
   styleUrls: ['./ex01.component.scss'],
 })
-export class Ex01Component implements OnInit, AfterViewChecked {
+export class Ex01Component implements OnInit, AfterViewChecked, OnDestroy {
   active: string = '';
   val: any;
   componentDestroyed$: Subject<boolean> = new Subject();

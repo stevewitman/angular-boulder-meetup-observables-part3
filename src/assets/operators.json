@@ -368,6 +368,15 @@
       "indepthdevUrl": "https://indepth.dev/reference/rxjs/operators/tap"
     },
 
+    "throttleTime": {
+      "name": "throttleTime",
+      "type": "filtering operator",
+      "rxjsdevUrl": "https://rxjs.dev/api/operators/throttleTime",
+      "learnrxUrl": "https://www.learnrxjs.io/learn-rxjs/operators/filtering/throttletime",
+      "marblesUrl": "https://rxmarbles.com/#throttleTime",
+      "indepthdevUrl": "https://indepth.dev/reference/rxjs/operators/throttle-time"
+    },
+
     "timer": {
       "name": "timer",
       "type": "creation operator",
