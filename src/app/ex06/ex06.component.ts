@@ -1,25 +1,35 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { AfterViewChecked, Component, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 
-import { map, mapTo, take } from 'rxjs/operators';
+import { of, from, Observable, Subject } from 'rxjs';
+import { distinct, map } from 'rxjs/operators';
 
 import { HighlightService } from '../highlight.service';
-import { concat, interval, merge, of, Subscription } from 'rxjs';
+import { logInConsole } from '../shared/utility';
 
 @Component({
   selector: 'app-ex06',
   templateUrl: './ex06.component.html',
   styleUrls: ['./ex06.component.scss'],
 })
-export class Ex06Component implements OnInit, OnDestroy {
+export class Ex06Component implements OnInit, AfterViewChecked, OnDestroy {
   active: string = '';
-  val: any;
-  subscriptions = new Subscription();
+  unsubscribe$ = new Subject();
 
-  constructor(
-    private highlightService: HighlightService,
-    private http: HttpClient
-  ) {}
+  bestSellingCars = [
+    { rank: '1', make: 'Ford', model: 'F-Series' },
+    { rank: '2', make: 'Ram', model: 'Pickup' },
+    { rank: '3', make: 'Chevorlet', model: 'Silverado' },
+    { rank: '4', make: 'Toyota', model: 'RAV4' },
+    { rank: '5', make: 'Honda', model: 'CR-V' },
+    { rank: '6', make: 'Nissan', model: 'Rouge' },
+    { rank: '7', make: 'Toyota', model: 'Camary' },
+    { rank: '8', make: 'Toyota', model: 'Corolla' },
+    { rank: '9', make: 'Honda', model: 'Civic' },
+    { rank: '10', make: 'Toyota', model: 'Highlander' },
+  ];
+
+  constructor(private highlightService: HighlightService) {}
 
   ngOnInit(): void {
     console.clear();
@@ -29,36 +39,73 @@ export class Ex06Component implements OnInit, OnDestroy {
     this.highlightService.highlightAll();
   }
 
-  ngOnDestroy() {
-    this.subscriptions.unsubscribe();
+  ngOnDestroy() {}
+
+  distinct1() {
+    this.active = 'distinct1';
+    console.clear();
+    logInConsole('subscribed');
+    of('none', 'none', 'dog', 'dog', 'cat', 'dog', 'fish', 'dog', 'cat')
+      .pipe(distinct())
+      .subscribe((val) => console.log(val));
   }
 
-  take1() {
-    this.active = 'take1';
+  distinct2() {
+    this.active = 'distinct2';
     console.clear();
-    this.logInConsole('completes after 5 values ...');
-    of(5,7,6,5,8,9,6,3,4,7,1,7).
-      pipe(
-        take(5)
+    logInConsole('subscribed');
+    from(this.bestSellingCars).pipe(distinct()).subscribe(console.log);
+  }
+
+  distinct3() {
+    this.active = 'distinct3';
+    console.clear();
+    logInConsole('subscribed');
+
+    from(this.bestSellingCars)
+      .pipe(
+        distinct(car => car.make)
       )
       .subscribe(console.log);
   }
 
-  concat1() {
-    this.active = 'concat1';
+  distinct4() {
+    this.active = 'distinct4';
     console.clear();
-    this.logInConsole('concat() example started ...');
-    const obsA$ = interval(500).pipe(map(val => 'A-' + val), take(4));
-    const obsB$ = interval(1000).pipe(map(val => 'B-' + val), take(3));
-    const obsC$ = interval(3000).pipe(map(val => 'C-' + val), take(2));
-    const sub = concat(obsB$, obsC$, obsA$).subscribe(console.log);
-    this.subscriptions.add(sub);
+    logInConsole('subscribed');
+
+    from(this.bestSellingCars)
+      .pipe(
+        distinct(car => car.make),
+        map(car => car.make)
+      )
+      .subscribe(console.log);
   }
 
-  logInConsole(val: string) {
-    console.log(
-      `%c ${val}`,
-      'background: #ADFF2F66; font-weight: bold; border-radius: 3px;'
-    );
+  distinct5() {
+    this.active = 'distinct5';
+    console.clear();
+    logInConsole('subscribed');
+
+    from(this.bestSellingCars)
+      .pipe(
+        map(car => car.make)
+      )
+      .subscribe(console.log);
+  }
+
+  distinct6() {
+    this.active = 'distinct6';
+    console.clear();
+    logInConsole('subscribed');
+
+    from(this.bestSellingCars)
+      .pipe(
+        map(car => car.make),
+        distinct()
+      )
+      .subscribe(console.log);
   }
 }
+
+

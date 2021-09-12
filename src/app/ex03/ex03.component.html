@@ -2,11 +2,6 @@
 
   <app-operator [operator]="'debounceTime'"></app-operator>
 
-
-
-
-
-
 <pre ngNonBindable (click)="debounce1()" [class.active]="active === 'debounce1'">
 <code class="language-typescript">const exampleInput = document.getElementById('exampleInput')!;
 
@@ -39,7 +34,6 @@ this.debounced$.subscribe(val => console.log(val));
             id="exampleInput"
             autocomplete="off"
             class="input-field"
-            
             >
             <!-- [disabled]="!((active === 'debounce1') || (active === 'throttle1'))" -->
         </mat-form-field>

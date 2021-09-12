@@ -2,7 +2,7 @@ import { AfterViewChecked, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
 import { fromEvent, Observable, Subject } from 'rxjs';
-import { debounceTime, map, takeUntil } from 'rxjs/operators';
+import { debounceTime, map, takeUntil, tap } from 'rxjs/operators';
 
 import { HighlightService } from '../highlight.service';
 import { logInConsole } from '../shared/utility';

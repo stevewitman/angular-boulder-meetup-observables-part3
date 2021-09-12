@@ -1,26 +1,61 @@
 <div class="page">
-<app-operator [operator]="'take'"></app-operator>
 
-<pre ngNonBindable (click)="take1()" [class.active] = "active === 'take1'"><code class="language-typescript">interval(400)
+  <app-operator [operator]="'distinct'"></app-operator>
+
+<pre ngNonBindable (click)="distinct1()" [class.active]="active === 'distinct1'">
+<code class="language-typescript">of('none', 'none', 'dog', 'dog', 'cat', 'dog', 'dog', 'cat')
+    .pipe(
+      distinct(),
+    )
+    .subscribe(val => console.log(val));
+</code>
+</pre>
+
+<pre ngNonBindable (click)="distinct2()" [class.active]="active === 'distinct2'">
+<code class="language-typescript">from(this.bestSellingCars)
   .pipe(
-    take(5)
+    distinct()
   )
-  .subscribe(console.log);
-</code></pre><!-- &#123; &#125; -->
+  .subscribe(val => console.log(val));
+</code>
+</pre>
 
-<app-operator [operator]="'concat'"></app-operator>
+<pre ngNonBindable (click)="distinct3()" [class.active]="active === 'distinct3'">
+<code class="language-typescript">from(this.bestSellingCars)
+  .pipe(
+    distinct(car => car.make),
+  )
+  .subscribe(val => console.log(val));
+</code>
+</pre>
 
-<pre ngNonBindable (click)="concat1()" [class.active] = "active === 'concat1'"><code class="language-typescript">const obsA$ = interval(500)
-  .pipe( map(val => 'A-' + val), take(4) );
+<pre ngNonBindable (click)="distinct4()" [class.active]="active === 'distinct4'">
+<code class="language-typescript">from(this.bestSellingCars)
+  .pipe(
+    distinct(car => car.make),
+    map(car => car.make)
+  )
+  .subscribe(val => console.log(val));
+</code>
+</pre>
 
-const obsB$ = interval(1000)
-  .pipe( map(val => 'B-' + val), take(3) );
-  
-const obsC$ = interval(3000)
-  .pipe( map(val => 'C-' + val), take(2) );
+<pre ngNonBindable (click)="distinct5()" [class.active]="active === 'distinct5'">
+<code class="language-typescript">from(this.bestSellingCars)
+  .pipe(
+    map(car => car.make)
+  )
+  .subscribe(val => console.log(val));
+</code>
+</pre>
 
-concat(obsB$, obsC$, obsA$)
-  .subscribe(console.log);
-</code></pre><!-- &#123; &#125; -->
+<pre ngNonBindable (click)="distinct6()" [class.active]="active === 'distinct6'">
+<code class="language-typescript">from(this.bestSellingCars)
+  .pipe(
+    map(car => car.make),
+    distinct()
+  )
+  .subscribe(val => console.log(val));
+</code>
+</pre>
 
 </div>

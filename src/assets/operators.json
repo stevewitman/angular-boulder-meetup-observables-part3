@@ -108,8 +108,17 @@
       "indepthdevUrl": "https://indepth.dev/reference/rxjs/operators/debounce-time"
     },
 
+    "distinct": {
+      "name": "distinct",
+      "type": "filtering operator",
+      "rxjsdevUrl": "https://rxjs.dev/api/operators/distinct",
+      "learnrxUrl": "https://www.learnrxjs.io/learn-rxjs/operators/filtering/distinct",
+      "marblesUrl": "https://rxmarbles.com/#distinct",
+      "indepthdevUrl": ""
+    },
+
     "distinctUntilChanged": {
-      "name": "debounceTime",
+      "name": "distinctUntilChanged",
       "type": "filtering operator",
       "rxjsdevUrl": "https://rxjs.dev/api/operators/distinctUntilChanged",
       "learnrxUrl": "https://www.learnrxjs.io/learn-rxjs/operators/filtering/distinctuntilchanged",
