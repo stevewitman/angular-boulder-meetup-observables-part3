@@ -313,12 +313,22 @@
       "marblesUrl": "https://rxmarbles.com/#skipUntil",
       "indepthdevUrl": ""
     },
+
     "skipWhile": {
       "name": "skipWhile",
       "type": "filtering operator",
       "rxjsdevUrl": "https://rxjs.dev/api/operators/skipWhile",
       "learnrxUrl": "https://www.learnrxjs.io/learn-rxjs/operators/filtering/skipwhile",
       "marblesUrl": "https://rxmarbles.com/#skipWhile",
+      "indepthdevUrl": ""
+    },
+
+    "startWith": {
+      "name": "startWith",
+      "type": "join operator",
+      "rxjsdevUrl": "https://rxjs.dev/api/operators/startWith",
+      "learnrxUrl": "https://www.learnrxjs.io/learn-rxjs/operators/combination/startwith",
+      "marblesUrl": "https://rxmarbles.com/#startWith",
       "indepthdevUrl": ""
     },
 
@@ -393,6 +403,15 @@
       "learnrxUrl": "https://www.learnrxjs.io/learn-rxjs/operators/creation/timer",
       "marblesUrl": "https://rxmarbles.com/#timer",
       "indepthdevUrl": ""
+    },
+
+    "withLatestFrom": {
+      "name": "withLatestFrom",
+      "type": "join operator",
+      "rxjsdevUrl": "https://rxjs.dev/api/operators/withLatestFrom",
+      "learnrxUrl": "https://www.learnrxjs.io/learn-rxjs/operators/combination/withlatestfrom",
+      "marblesUrl": "https://rxmarbles.com/#withLatestFrom",
+      "indepthdevUrl": "https://indepth.dev/reference/rxjs/operators/with-latest-from"
     },
 
     "zip": {

@@ -1,20 +1,23 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { AfterViewChecked, Component, OnDestroy, OnInit } from '@angular/core';
 
-import { map, pluck, skip, take } from 'rxjs/operators';
+import { interval, Observable, Subject } from 'rxjs';
+import { startWith, take, takeUntil } from 'rxjs/operators';
 
 import { HighlightService } from '../highlight.service';
-import { combineLatest, forkJoin, fromEvent, interval, Subscription, timer, zip } from 'rxjs';
+import { logInConsole } from '../shared/utility';
 
 @Component({
   selector: 'app-ex07',
   templateUrl: './ex07.component.html',
   styleUrls: ['./ex07.component.scss'],
 })
-export class Ex07Component implements OnInit, OnDestroy {
+export class Ex07Component implements OnInit, AfterViewChecked, OnDestroy {
   active: string = '';
-  val: any;
-  subscriptions = new Subscription();
+  result$!: Observable<any>;
+  users: any;
+  unsubscribe$ = new Subject();
+  componentDestroyed$: Subject<boolean> = new Subject();
 
   constructor(
     private highlightService: HighlightService,
@@ -30,53 +33,29 @@ export class Ex07Component implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscriptions.unsubscribe();
+    this.unsubscribe$.next(true);
+    this.unsubscribe$.complete();
+    console.log('unsubscribed');
   }
 
-  forkJoin1() {
-    this.active = 'forkJoin1';
+  exampleReset() {
+    this.unsubscribe$.next(true);
+    console.log('unsubscribed');
+  }
+
+  startWith1() {
+    this.active = 'startWith1';
     console.clear();
-    this.logInConsole('forkJoin() example started ...');
-    const obsA$ = interval(500).pipe(
-      map((val) => 'A-' + val),
-      take(4)
-    );
-    const obsB$ = interval(1000).pipe(
-      map((val) => 'B-' + val),
-      take(3)
-    );
-    const obsC$ = interval(3000).pipe(
-      map((val) => 'C-' + val),
-      take(2)
-    );
-    const sub = forkJoin(obsB$, obsC$, obsA$).subscribe(console.log);
-    this.subscriptions.add(sub);
+    this.exampleReset();
+    logInConsole('subscribed');
+
+    interval(1000)
+      .pipe(
+        startWith(false, [], { 'startValue':0, 'active': true}),
+        take(6),
+        takeUntil(this.unsubscribe$))
+      .subscribe((val) => console.log(val));
   }
 
-  zip1() {
-    this.active = 'zip1';
-    console.clear();
-    this.logInConsole('zip() example started ...');
-    const obsA$ = interval(500).pipe(
-      map((val) => 'A-' + val),
-      take(4)
-    );
-    const obsB$ = interval(1000).pipe(
-      map((val) => 'B-' + val),
-      take(3)
-    );
-    const obsC$ = interval(3000).pipe(
-      map((val) => 'C-' + val),
-      take(2)
-    );
-    const sub = zip(obsB$, obsC$, obsA$).subscribe(console.log);
-    this.subscriptions.add(sub);
-  }
 
-  logInConsole(val: string) {
-    console.log(
-      `%c ${val}`,
-      'background: #ADFF2F66; font-weight: bold; border-radius: 3px;'
-    );
-  }
 }

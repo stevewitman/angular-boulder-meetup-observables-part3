@@ -1,29 +1,15 @@
 <div class="page">
 
-<app-operator [operator]="'forkJoin'"></app-operator>
+  <app-operator [operator]="'startWith'"></app-operator>
 
-<pre ngNonBindable (click)="forkJoin1()" [class.active] = "active === 'forkJoin1'"><code class="language-typescript">const obsA$ = interval(500)
-  .pipe( map(val => 'A-' + val), take(4) );
-const obsB$ = interval(1000)
-  .pipe( map(val => 'B-' + val), take(3) );
-const obsC$ = interval(3000)
-  .pipe( map(val => 'C-' + val), take(2) );
-
-forkJoin(obsB$, obsC$, obsA$)
-  .subscribe(console.log);
-</code></pre><!-- &#123; &#125; -->
-
-<app-operator [operator]="'zip'"></app-operator>
-  
-<pre ngNonBindable (click)="zip1()" [class.active] = "active === 'zip1'"><code class="language-typescript">const obsA$ = interval(500)
-  .pipe( map(val => 'A-' + val), take(4) );
-const obsB$ = interval(1000)
-  .pipe( map(val => 'B-' + val), take(3) );
-const obsC$ = interval(3000)
-  .pipe( map(val => 'C-' + val), take(2) );
-
-zip(obsB$, obsC$, obsA$)
-  .subscribe(console.log);
-</code></pre><!-- &#123; &#125; -->
+<pre ngNonBindable (click)="startWith1()" [class.active]="active === 'startWith1'">
+<code class="language-typescript">interval(1000)
+  .pipe(
+    startWith(false, [], &#123; 'startValue': 0, 'active': true &#125;),
+    take(6),
+    takeUntil(this.unsubscribe$))
+  .subscribe((val) => console.log(val));
+</code>
+</pre>
 
 </div>
