@@ -33,7 +33,6 @@ export class Ex02Component implements OnInit, AfterViewChecked, OnDestroy {
 
   constructor(
     private highlightService: HighlightService,
-    private http: HttpClient
   ) {}
 
   ngOnInit(): void {
@@ -54,11 +53,11 @@ export class Ex02Component implements OnInit, AfterViewChecked, OnDestroy {
     this.active = 'skip2';
     console.clear();
     logInConsole('subscribed');
-    interval(100)
+    interval(1000)
       .pipe(
-        map((n) => (n + 1) / 10),
-        skip(5),
-        takeWhile((n) => n <= 2),
+        map((n) => n + 1),
+        skip(2),
+        takeWhile((n) => n <= 4),
         takeUntil(this.componentDestroyed$)
       )
       .subscribe(observer);

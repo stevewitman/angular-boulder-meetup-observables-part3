@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AbmSlidesComponent } from './abm-slides/abm-slides.component';
+import { Ex00Component } from './ex00/ex00.component';
 import { Ex01Component } from './ex01/ex01.component';
 import { Ex02Component } from './ex02/ex02.component';
 import { Ex03Component } from './ex03/ex03.component';
@@ -15,7 +15,7 @@ import { Ex11Component } from './ex11/ex11.component';
 import { Ex12Component } from './ex12/ex12.component';
 
 const routes: Routes = [
-  { path: 'slides', component: AbmSlidesComponent },
+  { path: 'blank', component: Ex00Component },
   { path: 'example-1', component: Ex01Component },
   { path: 'example-2', component: Ex02Component },
   { path: 'example-3', component: Ex03Component },

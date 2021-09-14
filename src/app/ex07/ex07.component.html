@@ -7,7 +7,6 @@
   .pipe(
     startWith(false, [], &#123; 'startValue': 0, 'active': true &#125;),
     take(6),
-    takeUntil(this.unsubscribe$))
   .subscribe((val) => console.log(val));
 </code>
 </pre>

@@ -10,6 +10,7 @@ import { HighlightService } from './highlight.service';
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
 import { OperatorComponent } from './operator/operator.component';
+import { Ex00Component } from './ex00/ex00.component';
 import { Ex01Component } from './ex01/ex01.component';
 import { Ex02Component } from './ex02/ex02.component';
 import { Ex03Component } from './ex03/ex03.component';
@@ -34,13 +35,13 @@ import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { AbmSlidesComponent } from './abm-slides/abm-slides.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavComponent,
     OperatorComponent,
+    Ex00Component,
     Ex01Component,
     Ex02Component,
     Ex03Component,
@@ -52,8 +53,8 @@ import { AbmSlidesComponent } from './abm-slides/abm-slides.component';
     Ex09Component,
     Ex10Component,
     Ex11Component,
-    AbmSlidesComponent,
     Ex12Component,
+    Ex00Component,
   ],
   imports: [
     BrowserModule,
