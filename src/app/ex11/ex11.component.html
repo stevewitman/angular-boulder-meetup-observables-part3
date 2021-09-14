@@ -1,42 +1,42 @@
 <div class="page">
 
-<app-operator [operator]="'first'"></app-operator>
-  
-<pre ngNonBindable (click)="first1()" [class.active] = "active === 'first1'"><code class="language-typescript">from([57, 82, 77, 82, 98])
-  .pipe(first(num => num >= 70))
-  .subscribe(console.log);
-</code></pre><!-- &#123; &#125; -->
-  
-<pre ngNonBindable (click)="first2()" [class.active] = "active === 'first2'"><code class="language-typescript">from([57, 82, 77, 82, 98])
-  .pipe(first(num => num < 50 ))
-  .subscribe(console.log);
-</code></pre><!-- &#123; &#125; -->
+  <app-operator [operator]="'switchMap'"></app-operator>
 
-<pre ngNonBindable (click)="first3()" [class.active] = "active === 'first3'"><code class="language-typescript">interval(1000)
-  .pipe(first((num) => num > 2))
-  .subscribe(console.log);
-</code></pre><!-- &#123; &#125; -->
-
-<app-operator [operator]="'last'"></app-operator>
-  
-<pre ngNonBindable (click)="last1()" [class.active] = "active === 'last1'"><code class="language-typescript">from([57, 82, 77, 82, 98])
-  .pipe(last(num => num < 80))
-  .subscribe(console.log);
-</code></pre><!-- &#123; &#125; -->
-  
-<pre ngNonBindable (click)="last2()" [class.active] = "active === 'last2'"><code class="language-typescript">from([57, 82, 77, 82, 98])
-  .pipe(last(num => num === 100))
-  .subscribe(console.log);
-</code></pre><!-- &#123; &#125; -->
-
-<pre ngNonBindable (click)="last3()" [class.active] = "active === 'last3'"><code class="language-typescript">interval(1000)
+<pre ngNonBindable (click)="switchMap1()" [class.active]="active === 'switchMap1'">
+<code class="language-typescript">this.exampleForm.valueChanges
   .pipe(
-    take(5),
-    last(num => num < 3)
+    switchMap((formValue) =>
+      this.http.put('https://jsonplaceholder.typicode.com/posts/1', &#123;
+        ...
+        body: JSON.stringify(&#123;
+          id: 1,
+          title: formValue,
+        &#125;),
+        ...
+      &#125;)
+    ),
+    takeUntil(this.unsubscribe$)
   )
-  .subscribe(console.log);
-</code></pre><!-- &#123; &#125; -->
+  .subscribe();</code>
+</pre>
 
-
+  <div class="row-output">
+    <div class="col-left"></div>
+    <div class="col-right">
+      <form class="example-form" [formGroup]="exampleForm">
+        <mat-form-field appearance="fill" class="form-field">
+          <mat-label>Input</mat-label>
+          <input
+            matInput
+            formControlName="exampleInput"
+            type="text"
+            id="exampleInput"
+            autocomplete="off"
+            class="input-field"
+          >
+        </mat-form-field>
+      </form>
+    </div>
+  </div>
 
 </div>

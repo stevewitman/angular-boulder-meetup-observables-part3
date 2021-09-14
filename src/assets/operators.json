@@ -74,7 +74,7 @@
 
     "concatMap": {
       "name": "concatMap",
-      "type": "transformation operator",
+      "type": "transformation operator (higher order)",
       "rxjsdevUrl": "https://rxjs.dev/api/operators/concatMap",
       "learnrxUrl": "https://www.learnrxjs.io/learn-rxjs/operators/transformation/concatmap",
       "marblesUrl": "https://rxmarbles.com/#concatMap",
@@ -124,6 +124,15 @@
       "learnrxUrl": "https://www.learnrxjs.io/learn-rxjs/operators/filtering/distinctuntilchanged",
       "marblesUrl": "https://rxmarbles.com/#distinctUntilChanged",
       "indepthdevUrl": "https://indepth.dev/reference/rxjs/operators/distinct-until-changed"
+    },
+
+    "exhaustMap": {
+      "name": "exhaustMap",
+      "type": "transformation operator (higher order)",
+      "rxjsdevUrl": "https://rxjs.dev/api/operators/exhaustMap",
+      "learnrxUrl": "https://www.learnrxjs.io/learn-rxjs/operators/transformation/exhaustmap",
+      "marblesUrl": "",
+      "indepthdevUrl": "https://indepth.dev/reference/rxjs/operators/exhaust-map"
     },
 
     "filter": {
@@ -334,11 +343,11 @@
 
     "switchMap": {
       "name": "switchMap",
-      "type": "filtering operator",
+      "type": "filtering operator (higher order)",
       "rxjsdevUrl": "https://rxjs.dev/api/operators/switchMap",
       "learnrxUrl": "https://www.learnrxjs.io/learn-rxjs/operators/transformation/switchmap",
       "marblesUrl": "https://rxmarbles.com/#switchMap",
-      "indepthdevUrl": ""
+      "indepthdevUrl": "https://indepth.dev/reference/rxjs/operators/switch-map"
     },
 
     "take": {

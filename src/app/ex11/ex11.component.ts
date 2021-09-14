@@ -1,22 +1,27 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { AfterViewChecked, Component, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 
-import { buffer, filter, find, first, last, single, take } from 'rxjs/operators';
-import { from, fromEvent, interval, Observable, Subscription } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { switchMap, takeUntil } from 'rxjs/operators';
 
 import { HighlightService } from '../highlight.service';
+import { logInConsole } from '../shared/utility';
 
 @Component({
   selector: 'app-ex11',
   templateUrl: './ex11.component.html',
   styleUrls: ['./ex11.component.scss'],
 })
-export class Ex11Component implements OnInit, OnDestroy, AfterViewInit {
+export class Ex11Component implements OnInit, AfterViewChecked, OnDestroy {
   active: string = '';
-  val: any;
-  subscriptions = new Subscription();
-  @ViewChild('triggerBtn', { read: ElementRef }) triggerBtn?: ElementRef;
-  buttonClicks$: Observable<any> | undefined;
+  keyup$!: Observable<any>;
+  throttled$!: Observable<any>;
+  unsubscribe$ = new Subject();
+  withoutThrottle: string = '';
+  exampleForm = new FormGroup({
+    exampleInput: new FormControl({ value: '', disabled: true }),
+  });
 
   constructor(
     private highlightService: HighlightService,
@@ -27,82 +32,48 @@ export class Ex11Component implements OnInit, OnDestroy, AfterViewInit {
     console.clear();
   }
 
-  ngAfterViewInit() {
-    if (this.triggerBtn) {
-      this.buttonClicks$ = fromEvent(this.triggerBtn.nativeElement, 'click');
-    }
-  }
-
   ngAfterViewChecked() {
     this.highlightService.highlightAll();
   }
 
   ngOnDestroy() {
-    this.subscriptions.unsubscribe();
+    this.unsubscribe$.next(true);
+    this.unsubscribe$.complete();
+    console.log('unsubscribed');
   }
 
-  first1() {
-    this.active = 'first1';
-    console.clear();
-    console.log('ASDGHFDGSAF');
-    this.logInConsole('first(num => num >= 70) ...');
-    from([57, 82, 77, 82, 98])
-      .pipe(first((num) => num >= 70))
-      .subscribe(console.log);
+  exampleReset() {
+    this.unsubscribe$.next(true);
+    console.log('example reset');
   }
 
-  first2() {
-    this.active = 'first2';
+  switchMap1() {
+    this.active = 'switchMap1';
     console.clear();
-    this.logInConsole('first(num => num < 50) ...');
-    from([57, 82, 77, 82, 98])
-      .pipe(first((num) => num < 50))
-      .subscribe(console.log);
-  }
+    this.exampleReset();
+    this.exampleForm.get('exampleInput')?.reset();
+    this.exampleForm.get('exampleInput')?.enable();
+    logInConsole('subscribed');
 
-  first3() {
-    this.active = 'first3';
-    console.clear();
-    this.logInConsole('first(num => num > 2) ...');
-    interval(1000)
-      .pipe(first((num) => num > 2))
-      .subscribe(console.log);
-  }
-
-  last1() {
-    this.active = 'last1';
-    console.clear();
-    this.logInConsole('last(num => num < 80) ...');
-    from([57, 82, 77, 82, 98])
-      .pipe(last((num) => num < 80))
-      .subscribe(console.log);
-  }
-
-  last2() {
-    this.active = 'last2';
-    console.clear();
-    this.logInConsole('last(num => num === 100) ...');
-    from([57, 82, 77, 82, 98])
-      .pipe(last((num) => num === 100))
-      .subscribe(console.log);
-  }
-
-  last3() {
-    this.active = 'last3';
-    console.clear();
-    this.logInConsole('last(num => num < 3) ...');
-    interval(1000)
+    this.exampleForm.valueChanges
       .pipe(
-        take(5),
-        last((num) => num < 3)
+        switchMap((formValue) =>
+          this.http.put('https://jsonplaceholder.typicode.com/posts/1', {
+            method: 'PUT',
+            body: JSON.stringify({
+              id: 1,
+              title: formValue,
+            }),
+            headers: {
+              'Content-type': 'application/json; charset=UTF-8',
+            },
+          })
+        ),
+        takeUntil(this.unsubscribe$)
       )
-      .subscribe(console.log);
-  }
-
-  logInConsole(val: string) {
-    console.log(
-      `%c ${val}`,
-      'background: #ADFF2F66; font-weight: bold; border-radius: 3px;'
-    );
+      .subscribe(
+        (saveResult) => console.log('SAVED'),
+        (err) => console.log('ERROR')
+      );
   }
 }

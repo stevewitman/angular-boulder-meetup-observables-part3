@@ -1,42 +1,42 @@
 <div class="page">
 
-<app-operator [operator]="'buffer'"></app-operator>
-  
-<pre ngNonBindable (click)="buffer1()" [class.active] = "active === 'buffer1'"><code class="language-typescript">const counter$ = interval(500);
-counter$
+  <app-operator [operator]="'concatMap'"></app-operator>
+
+<pre ngNonBindable (click)="concatMap1()" [class.active]="active === 'concatMap1'">
+<code class="language-typescript">this.exampleForm.valueChanges
   .pipe(
-    buffer(this.buttonClicks$)
+    concatMap((formValue) =>
+      this.http.put('https://jsonplaceholder.typicode.com/posts/1', &#123;
+        ...
+        body: JSON.stringify(&#123;
+          id: 1,
+          title: formValue,
+        &#125;),
+        ...
+      &#125;)
+    ),
+    takeUntil(this.unsubscribe$)
   )
-  .subscribe(console.log);
-</code></pre><!-- &#123; &#125; -->
-<div class="actions">
-  <button
-    mat-stroked-button
-    #triggerBtn
-    [disabled]="!(active == 'buffer1')"
-    [ngClass]="{'triggerButtonActive': (active == 'buffer1')}"
-  >Button</button>
-</div>
+  .subscribe();</code>
+</pre>
 
-<app-operator [operator]="'bufferCount'"></app-operator>
-  
-<pre ngNonBindable (click)="bufferCount1()" [class.active] = "active === 'bufferCount1'"><code class="language-typescript">const myObs$ = interval(500);
-myObs$.bufferCount(4).subscribe(console.log);
-</code></pre><!-- &#123; &#125; -->
-
-<pre ngNonBindable (click)="bufferCount2()" [class.active] = "active === 'bufferCount2'"><code class="language-typescript">const myObs$ = interval(500);
-myObs$.bufferCount(4, 2).subscribe(console.log);
-</code></pre><!-- &#123; &#125; -->
-
-<app-operator [operator]="'bufferTime'"></app-operator>
-  
-<pre ngNonBindable (click)="bufferTime1()" [class.active] = "active === 'bufferTime1'"><code class="language-typescript">const myObs$ = interval(500);
-myObs$
-  .pipe(
-    bufferTime(1500),
-    tap( (val: any) => console.log(val) )
-  )
-  .subscribe();
-</code></pre><!-- &#123; &#125; -->
+  <div class="row-output">
+    <div class="col-left"></div>
+    <div class="col-right">
+      <form class="example-form" [formGroup]="exampleForm">
+        <mat-form-field appearance="fill" class="form-field">
+          <mat-label>Input</mat-label>
+          <input
+            matInput
+            formControlName="exampleInput"
+            type="text"
+            id="exampleInput"
+            autocomplete="off"
+            class="input-field"
+          >
+        </mat-form-field>
+      </form>
+    </div>
+  </div>
 
 </div>

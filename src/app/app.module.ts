@@ -21,7 +21,7 @@ import { Ex08Component } from './ex08/ex08.component';
 import { Ex09Component } from './ex09/ex09.component';
 import { Ex10Component } from './ex10/ex10.component';
 import { Ex11Component } from './ex11/ex11.component';
-// import { Ex12Component } from './ex12/ex12.component';
+import { Ex12Component } from './ex12/ex12.component';
 
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -53,7 +53,7 @@ import { AbmSlidesComponent } from './abm-slides/abm-slides.component';
     Ex10Component,
     Ex11Component,
     AbmSlidesComponent,
-    // Ex12Component,
+    Ex12Component,
   ],
   imports: [
     BrowserModule,

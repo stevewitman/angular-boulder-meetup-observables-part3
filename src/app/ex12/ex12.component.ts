@@ -3,17 +3,17 @@ import { AfterViewChecked, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
 import { Observable, Subject } from 'rxjs';
-import { concatMap, takeUntil} from 'rxjs/operators';
+import { exhaustMap, takeUntil } from 'rxjs/operators';
 
 import { HighlightService } from '../highlight.service';
 import { logInConsole } from '../shared/utility';
 
 @Component({
-  selector: 'app-ex09',
-  templateUrl: './ex09.component.html',
-  styleUrls: ['./ex09.component.scss'],
+  selector: 'app-ex12',
+  templateUrl: './ex12.component.html',
+  styleUrls: ['./ex12.component.scss'],
 })
-export class Ex09Component implements OnInit, AfterViewChecked, OnDestroy {
+export class Ex12Component implements OnInit, AfterViewChecked, OnDestroy {
   active: string = '';
   keyup$!: Observable<any>;
   throttled$!: Observable<any>;
@@ -23,8 +23,10 @@ export class Ex09Component implements OnInit, AfterViewChecked, OnDestroy {
     exampleInput: new FormControl({ value: '', disabled: true }),
   });
 
-  constructor(private highlightService: HighlightService,
-    private http: HttpClient) {}
+  constructor(
+    private highlightService: HighlightService,
+    private http: HttpClient
+  ) {}
 
   ngOnInit(): void {
     console.clear();
@@ -45,8 +47,8 @@ export class Ex09Component implements OnInit, AfterViewChecked, OnDestroy {
     console.log('example reset');
   }
 
-  concatMap1() {
-    this.active = 'concatMap1';
+  exhaustMap1() {
+    this.active = 'exhaustMap1';
     console.clear();
     this.exampleReset();
     this.exampleForm.get('exampleInput')?.reset();
@@ -55,7 +57,7 @@ export class Ex09Component implements OnInit, AfterViewChecked, OnDestroy {
 
     this.exampleForm.valueChanges
       .pipe(
-        concatMap((formValue) =>
+        exhaustMap((formValue) =>
           this.http.put('https://jsonplaceholder.typicode.com/posts/1', {
             method: 'PUT',
             body: JSON.stringify({
@@ -73,6 +75,5 @@ export class Ex09Component implements OnInit, AfterViewChecked, OnDestroy {
         (saveResult) => console.log('SAVED'),
         (err) => console.log('ERROR')
       );
-    }
-
+  }
 }

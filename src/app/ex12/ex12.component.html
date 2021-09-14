@@ -1,11 +1,11 @@
 <div class="page">
 
-  <app-operator [operator]="'mergeMap'"></app-operator>
+  <app-operator [operator]="'exhaustMap'"></app-operator>
 
-<pre ngNonBindable (click)="mergeMap1()" [class.active]="active === 'mergeMap1'">
+<pre ngNonBindable (click)="exhaustMap1()" [class.active]="active === 'exhaustMap1'">
 <code class="language-typescript">this.exampleForm.valueChanges
   .pipe(
-    mergeMap((formValue) =>
+    exhaustMap((formValue) =>
       this.http.put('https://jsonplaceholder.typicode.com/posts/1', &#123;
         ...
         body: JSON.stringify(&#123;

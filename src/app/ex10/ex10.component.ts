@@ -1,22 +1,27 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { AfterViewChecked, Component, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 
-import { buffer, filter, find, single } from 'rxjs/operators';
-import { from, fromEvent, interval, Observable, Subscription } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { mergeMap, takeUntil } from 'rxjs/operators';
 
 import { HighlightService } from '../highlight.service';
+import { logInConsole } from '../shared/utility';
 
 @Component({
   selector: 'app-ex10',
   templateUrl: './ex10.component.html',
   styleUrls: ['./ex10.component.scss'],
 })
-export class Ex10Component implements OnInit, OnDestroy, AfterViewInit {
+export class Ex10Component implements OnInit, AfterViewChecked, OnDestroy {
   active: string = '';
-  val: any;
-  subscriptions = new Subscription();
-  @ViewChild('triggerBtn', { read: ElementRef }) triggerBtn?: ElementRef;
-  buttonClicks$: Observable<any> | undefined;
+  keyup$!: Observable<any>;
+  throttled$!: Observable<any>;
+  unsubscribe$ = new Subject();
+  withoutThrottle: string = '';
+  exampleForm = new FormGroup({
+    exampleInput: new FormControl({ value: '', disabled: true }),
+  });
 
   constructor(
     private highlightService: HighlightService,
@@ -27,87 +32,48 @@ export class Ex10Component implements OnInit, OnDestroy, AfterViewInit {
     console.clear();
   }
 
-  ngAfterViewInit() {
-    if (this.triggerBtn) {
-      this.buttonClicks$ = fromEvent(this.triggerBtn.nativeElement, 'click');
-    }
-  }
-
   ngAfterViewChecked() {
     this.highlightService.highlightAll();
   }
 
   ngOnDestroy() {
-    this.subscriptions.unsubscribe();
+    this.unsubscribe$.next(true);
+    this.unsubscribe$.complete();
+    console.log('unsubscribed');
   }
 
-  filter1() {
-    this.active = 'filter1';
+  exampleReset() {
+    this.unsubscribe$.next(true);
+    console.log('example reset');
+  }
+
+  mergeMap1() {
+    this.active = 'mergeMap1';
     console.clear();
-    this.logInConsole('filter(num => num > 75) ...');
-    from([57, 82, 77, 82, 98])
-      .pipe(filter(num => num > 75))
-      .subscribe(console.log);
-  }
+    this.exampleReset();
+    this.exampleForm.get('exampleInput')?.reset();
+    this.exampleForm.get('exampleInput')?.enable();
+    logInConsole('subscribed');
 
-  filter2() {
-    this.active = 'filter2';
-    console.clear();
-    this.logInConsole('filter(num => num === 100) ...');
-    from([57, 82, 77, 82, 98])
-      .pipe(filter((num) => num === 100))
-      .subscribe(console.log);
-  }
-
-  find1() {
-    this.active = 'find1';
-    console.clear();
-    this.logInConsole('find(num => num > 75) ...');
-    from([57, 82, 77, 82, 98])
-      .pipe(find((num) => num > 75))
-      .subscribe(console.log);
-  }
-
-  find2() {
-    this.active = 'find2';
-    console.clear();
-    this.logInConsole('find(num => num === 100) ...');
-    from([57, 82, 77, 82, 98])
-      .pipe(find((num) => num === 100))
-      .subscribe(console.log);
-  }
-
-  single1() {
-    this.active = 'single1';
-    console.clear();
-    this.logInConsole('single(num => num === 82) ...');
-    from([57, 82, 77, 82, 98])
-      .pipe(single(num => num === 82))
-      .subscribe(console.log);
-  }
-
-  single2() {
-    this.active = 'single2';
-    console.clear();
-    this.logInConsole('single(num => num === 77) ...');
-    from([57, 82, 77, 82, 98])
-      .pipe(single(num => num === 77))
-      .subscribe(console.log);
-  }
-
-  single3() {
-    this.active = 'single3';
-    console.clear();
-    this.logInConsole('single(num => num === 100) ...');
-    from([57, 82, 77, 82, 98])
-      .pipe(single(num => num === 100))
-      .subscribe(console.log);
-  }
-
-  logInConsole(val: string) {
-    console.log(
-      `%c ${val}`,
-      'background: #ADFF2F66; font-weight: bold; border-radius: 3px;'
-    );
+    this.exampleForm.valueChanges
+      .pipe(
+        mergeMap((formValue) =>
+          this.http.put('https://jsonplaceholder.typicode.com/posts/1', {
+            method: 'PUT',
+            body: JSON.stringify({
+              id: 1,
+              title: formValue,
+            }),
+            headers: {
+              'Content-type': 'application/json; charset=UTF-8',
+            },
+          })
+        ),
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe(
+        (saveResult) => console.log('SAVED'),
+        (err) => console.log('ERROR')
+      );
   }
 }
