@@ -1,29 +1,28 @@
 <div class="page">
 
-<app-operator [operator]="'skip'"></app-operator>
+  <app-operator [operator]="'withLatestFrom'"></app-operator>
 
-<pre ngNonBindable (click)="skip1()" [class.active] = "active === 'skip1'"><code class="language-typescript">const timer$ = interval(1000)
-  .pipe( skip(3) )
-  .subscribe(console.log);
-</code></pre><!-- &#123; &#125; -->
-
-<app-operator [operator]="'combineLatest'"></app-operator>
-  
-<pre ngNonBindable (click)="combineLatest1()" [class.active] = "active === 'combineLatest1'"><code class="language-typescript">const timer$ = interval(1000)
-  .pipe( skip(3) );
-
-const clicker$ = fromEvent(document, 'click')
+<pre ngNonBindable (click)="withLatestFrom1()" [class.active] = "active === 'withLatestFrom1'">
+<code class="language-typescript">fromEvent&lt;MouseEvent&gt;(document, 'click')
   .pipe(
-    skip(1),
-    pluck('clientX')
+    skip(1), // skips the click that starts this example
+    map((&#123; clientX, clientY &#125;) =>
+      (&#123; x: clientX, y: clientY &#125;)),
+    withLatestFrom(interval(100), interval(3000)),
+  )
+  .subscribe(([coords, interval1, interval2]) =>
+    console.log(
+      coords,
+      '  t1:', interval1,
+      '  t2:', interval2
+    )
   );
+</code>
+</pre><!-- &#123; &#125; -->
 
-const sub = combineLatest(timer$, clicker$)
-  .subscribe(
-    ([timerVal, clickerVal]) =>
-    console.log(`Timer: $&#123;timerVal&#125;, Clicker: $&#123;clickerVal&#125;`)
-  );
-</code></pre><!-- &#123; &#125; -->
+<p>Click out here and watch the console.</p>
+<p>Note: values will only be emitted after, first a click, and also both interval observables have emitted a value (after 3 seconds)</p>
+
 <div class="buttons-array">
   <button mat-raised-button class="btn" >&nbsp;</button>
   <button mat-raised-button class="btn">&nbsp;</button>
@@ -34,4 +33,5 @@ const sub = combineLatest(timer$, clicker$)
   <button mat-raised-button class="btn">&nbsp;</button>
   <button mat-raised-button class="btn">&nbsp;</button>
 </div>
+
 </div>

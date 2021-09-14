@@ -1,24 +1,24 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { AfterViewChecked, Component, OnDestroy, OnInit } from '@angular/core';
 
-import { pluck, skip } from 'rxjs/operators';
-import { combineLatest, fromEvent, interval, Subscription } from 'rxjs';
+import { fromEvent, interval, Subject } from 'rxjs';
+import { map, skip, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { HighlightService } from '../highlight.service';
+import { logInConsole } from '../shared/utility';
 
 @Component({
   selector: 'app-ex08',
   templateUrl: './ex08.component.html',
   styleUrls: ['./ex08.component.scss'],
 })
-export class Ex08Component implements OnInit, OnDestroy {
+export class Ex08Component implements OnInit, AfterViewChecked, OnDestroy {
   active: string = '';
-  val: any;
-  subscriptions = new Subscription();
+  unsubscribe$ = new Subject();
+  componentDestroyed$: Subject<boolean> = new Subject();
 
   constructor(
     private highlightService: HighlightService,
-    private http: HttpClient
   ) {}
 
   ngOnInit(): void {
@@ -30,39 +30,39 @@ export class Ex08Component implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscriptions.unsubscribe();
+    this.unsubscribe$.next(true);
+    this.unsubscribe$.complete();
+    console.log('unsubscribed');
   }
 
-  skip1() {
-    this.active = 'skip1';
+  exampleReset() {
+    this.unsubscribe$.next(true);
+    console.log('example was reset');
+  }
+
+  withLatestFrom1() {
+    this.active = 'withLatestFrom1';
     console.clear();
-    this.logInConsole('skip() example started ...');
-    const timer$ = interval(1000)
-      .pipe(skip(3))
-      .subscribe(console.log)
-    this.subscriptions.add(timer$);
+    this.exampleReset();
+    logInConsole('subscribed');
+    const timer$ = interval(1000);
+
+    fromEvent<MouseEvent>(document, 'click')
+      .pipe(
+        skip(1),
+        map(({ clientX, clientY }) => ({ x: clientX, y: clientY })),
+        withLatestFrom(interval(100), interval(3000)),
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe(([coords, interval1, interval2]) =>
+        console.log(
+          coords,
+          '  t1:',
+          interval1,
+          '  t2:',
+          interval2
+        )
+      );
   }
 
-  combineLatest1() {
-    this.active = 'combineLatest1';
-    console.clear();
-    this.logInConsole('combineLatest() example started ...');
-    const timer$ = interval(1000).pipe(skip(3));
-    const clicker$ = fromEvent(document, 'click').pipe(
-      skip(1),
-      pluck('clientX')
-    );
-    const sub = combineLatest(timer$, clicker$).subscribe(
-      ([timerVal, clickerVal]) =>
-        console.log(`Timer = ${timerVal},   Clicked X = ${clickerVal}`)
-    );
-    this.subscriptions.add(sub);
-  }
-
-  logInConsole(val: string) {
-    console.log(
-      `%c ${val}`,
-      'background: #ADFF2F66; font-weight: bold; border-radius: 3px;'
-    );
-  }
 }

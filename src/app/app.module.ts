@@ -32,6 +32,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AbmSlidesComponent } from './abm-slides/abm-slides.component';
 
@@ -66,6 +67,7 @@ import { AbmSlidesComponent } from './abm-slides/abm-slides.component';
     MatButtonModule,
     MatFormFieldModule,
     MatSidenavModule,
+    MatSlideToggleModule,
     MatIconModule,
     MatInputModule,
     MatListModule,
